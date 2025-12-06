@@ -36,10 +36,7 @@ class OnboardingScreen extends StatelessWidget {
                   text: 'Start',
                   onPressed: () {
                     // TODO: Điều hướng đến màn hình đăng nhập (Login Screen)
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
                   },
                 ),
               ),
