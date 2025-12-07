@@ -1,3 +1,4 @@
+import 'package:btl_magicenglish/features/streak/presentation/pages/daily_streak_page.dart';
 import 'package:flutter/material.dart';
 
 // --- MÀN HÌNH CHÍNH (HOME DASHBOARD SCREEN) ---
@@ -30,8 +31,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 const SizedBox(height: 16),
 
                 // 2. Daily Streak Section
-                const DailyStreakCard(streakDays: 12),
-                const SizedBox(height: 16),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyStreakScreen()));
+                  },
+                  child: const DailyStreakCard(streakDays: 12),
+                ),
 
                 // 3. Stats Grid (4 stats)
                 const StatsGrid(),
