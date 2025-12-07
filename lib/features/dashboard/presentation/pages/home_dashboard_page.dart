@@ -1,3 +1,5 @@
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/cefr_level_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/part_of_speech_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/word_learned_page.dart';
 import 'package:flutter/material.dart';
 
@@ -215,18 +217,30 @@ class StatsGrid extends StatelessWidget {
           ),
         ),
 
-        _StatTile(
-          icon: Icons.trending_up,
-          title: "CEFR Level",
-          value: "A1 → B1",
-          color: Colors.purple,
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const CefrLevelScreen()));
+          },
+          child: const _StatTile(
+            icon: Icons.trending_up,
+            title: "CEFR Level",
+            value: "A1 → B1",
+            color: Colors.purple,
+          ),
         ),
-        _StatTile(
-          icon: Icons.category,
-          title: "Parts of Speech",
-          value: "8 Types",
-          color: Colors.green,
+
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const PartOfSpeechScreen()));
+          },
+          child: const _StatTile(
+            icon: Icons.category,
+            title: "Parts of Speech",
+            value: "8 Types",
+            color: Colors.green,
+          ),
         ),
+
         _StatTile(
           icon: Icons.timer,
           title: "Study Time Today",
