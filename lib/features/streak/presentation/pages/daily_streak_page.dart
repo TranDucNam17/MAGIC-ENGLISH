@@ -1,3 +1,4 @@
+import 'package:btl_magicenglish/features/streak/presentation/pages/view_reward_page.dart';
 import 'package:flutter/material.dart';
 
 // --- MÀN HÌNH CHÍNH (DAILY STREAK SCREEN) ---
@@ -349,7 +350,9 @@ class RewardsCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewRewardsScreen()));
+                  },
                   child: const Text(
                     "View Rewards",
                     style: TextStyle(
