@@ -1,4 +1,4 @@
-import 'package:btl_magicenglish/features/streak/presentation/pages/daily_streak_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/word_learned_page.dart';
 import 'package:flutter/material.dart';
 
 // --- MÀN HÌNH CHÍNH (HOME DASHBOARD SCREEN) ---
@@ -31,12 +31,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                 const SizedBox(height: 16),
 
                 // 2. Daily Streak Section
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyStreakScreen()));
-                  },
-                  child: const DailyStreakCard(streakDays: 12),
-                ),
+                const DailyStreakCard(streakDays: 12),
+                const SizedBox(height: 16),
 
                 // 3. Stats Grid (4 stats)
                 const StatsGrid(),
@@ -206,13 +202,19 @@ class StatsGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       childAspectRatio: 1.5,
-      children: const [
-        _StatTile(
-          icon: Icons.translate,
-          title: "Word Learned",
-          value: "120",
-          color: Colors.blue,
+      children: [
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const WordLearnedScreen()));
+          },
+          child: const _StatTile(
+            icon: Icons.translate,
+            title: "Word Learned",
+            value: "120",
+            color: Colors.blue,
+          ),
         ),
+
         _StatTile(
           icon: Icons.trending_up,
           title: "CEFR Level",
