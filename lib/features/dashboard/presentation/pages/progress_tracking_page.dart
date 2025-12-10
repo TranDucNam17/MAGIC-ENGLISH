@@ -48,15 +48,15 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
               children: [
                 // --- CÁC THÀNH PHẦN GIAO DIỆN ---
                 const _LearningSummaryCard(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 _buildPeriodControl(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 const _QuickStatsCards(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 const _CefrProgressCard(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 const _ActivityTimelineCard(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 const _RecommendedTodayCard(),
               ],
             ),
@@ -199,8 +199,10 @@ class _QuickStatsCards extends StatelessWidget {
             label: "Grammar",
             value: "32 checks"),
         _StatCard(
-            icon: Icons.menu_book, label: "Reading", value: "18 lesson"),
-        _StatCard(icon: Icons.edit_note, label: "Writing", value: "12"),
+            icon: Icons.menu_book,
+            label: "Reading", value: "18 lesson"),
+        _StatCard(icon: Icons.edit_note,
+            label: "Writing", value: "12"),
       ],
     );
   }
