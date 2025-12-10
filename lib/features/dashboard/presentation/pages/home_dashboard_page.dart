@@ -1,5 +1,11 @@
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/achievements_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/ai_assistant_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/cefr_level_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/grammar_checker_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/magic_vocab_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/notifications_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/part_of_speech_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/progress_tracking_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/word_learned_page.dart';
 import 'package:flutter/material.dart';
 
@@ -138,7 +144,9 @@ class HeaderGreetingCard extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.notifications_outlined, color: Colors.grey),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsPage()));
+              },
             ),
           ],
         ),
@@ -385,12 +393,54 @@ class FeatureShortcuts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: const [
-        _ShortcutItem(icon: Icons.school, label: "Magic Vocab"),
-        _ShortcutItem(icon: Icons.rule, label: "Grammar"),
-        _ShortcutItem(icon: Icons.auto_awesome, label: "AI Assistant"),
-        _ShortcutItem(icon: Icons.bar_chart, label: "Progress"),
-        _ShortcutItem(icon: Icons.emoji_events, label: "Achievements"),
+      children: [
+        GestureDetector(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MagicVocabScreen())
+            );
+          },
+          child: const _ShortcutItem(icon: Icons.school, label: "Magic Vocab"),
+        ),
+
+        GestureDetector(
+          onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const GrammarCheckerScreen())
+            );
+          },
+          child: const _ShortcutItem(icon: Icons.rule, label: "Grammar"),
+        ),
+
+        GestureDetector(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AiAssistantScreen())
+            );
+          },
+          child: const _ShortcutItem(icon: Icons.auto_awesome, label: "AI Assistant"),
+        ),
+
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProgressTrackingPage())
+            );
+          },
+          child: const _ShortcutItem(icon: Icons.bar_chart, label: "Progress"),
+        ),
+
+        GestureDetector(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AchievementsPage())
+            );
+          },
+          child: const _ShortcutItem(icon: Icons.emoji_events, label: "Achievements"),
+        ),
       ],
     );
   }
