@@ -188,7 +188,7 @@ class _QuickStatsCards extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 1.8,
+      childAspectRatio: 1.4,
       children: const [
         _StatCard(
             icon: Icons.book_outlined,
