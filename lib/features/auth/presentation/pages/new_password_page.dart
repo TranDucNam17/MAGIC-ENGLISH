@@ -1,3 +1,4 @@
+import 'package:btl_magicenglish/features/auth/presentation/pages/new_password_success_page.dart';
 import 'package:flutter/material.dart';
 
 class NewPasswordScreen extends StatefulWidget {
@@ -173,7 +174,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       // 1. Kiểm tra xem hai mật khẩu có khớp nhau không.
                       // 2. Gửi mật khẩu mới đến server.
                       // 3. Nếu thành công, điều hướng đến màn hình Login hoặc Home.
-                      print('Confirm button pressed');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const NewPasswordSuccessPage()));
                     },
                     color: primaryBlue,
                     minWidth: double.infinity,
