@@ -1,3 +1,6 @@
+// lib/features/dashboard/presentation/pages/home_dashboard_page.dart
+
+// Import tất cả các trang của bạn (giữ nguyên)
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/achievements_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/ai_assistant_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/cefr_level_page.dart';
@@ -5,6 +8,7 @@ import 'package:btl_magicenglish/features/dashboard/presentation/pages/grammar_c
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/magic_vocab_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/notifications_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/part_of_speech_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/profile_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/progress_tracking_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/word_learned_page.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +22,22 @@ class HomeDashboardScreen extends StatefulWidget {
 }
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
-  int _selectedIndex = 0; // Tab "Home" được chọn mặc định
+  int _selectedIndex = 0;
+
+  // Danh sách các trang tương ứng với các tab
+  // _HomeScreenContent đã được định nghĩa ở dưới
+  static const List<Widget> _widgetOptions = <Widget>[
+    _HomeScreenContent(),       // Index 0: Trang Home
+    MagicVocabScreen(),         // Index 1: Trang Vocab
+    GrammarCheckerScreen(),     // Index 2: Trang Grammar
+    ProfilePage(),              // Index 3: Trang Profile
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,54 +46,22 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. Header Greeting Card
-                const HeaderGreetingCard(userName: "Nam"),
-                const SizedBox(height: 16),
 
-                // 2. Daily Streak Section
-                const DailyStreakCard(streakDays: 12),
-                const SizedBox(height: 16),
-
-                // 3. Stats Grid (4 stats)
-                const StatsGrid(),
-                const SizedBox(height: 16),
-
-                // 4. Continue Learning Card
-                const ContinueLearningCard(),
-                const SizedBox(height: 24),
-
-                // 5. Feature Shortcuts Row
-                const FeatureShortcuts(),
-                const SizedBox(height: 24),
-
-                // 6. CEFR Progress Card
-                const CefrProgressCard(),
-                const SizedBox(height: 24),
-
-                // 7. Bottom Quick Actions (Phần này có thể bỏ nếu vướng BottomNavBar)
-                // Nếu muốn nó luôn ở cuối, cần cấu trúc layout khác (không dùng SingleChildScrollView)
-                // Nhưng theo yêu cầu, đây là cách xếp chồng các card.
-              ],
-            ),
-          ),
-        ),
+      // =================================================================
+      // SỬA LỖI CHÍNH: body bây giờ sẽ hiển thị widget tương ứng với tab được chọn
+      // =================================================================
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
       ),
-      // Bottom Navigation Bar
+      // Hoặc cách khác:
+      // body: _widgetOptions.elementAt(_selectedIndex),
+
+      // Bottom Navigation Bar (Giữ nguyên)
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed, // Đảm bảo 4 item luôn hiển thị
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: primaryBlue,
         unselectedItemColor: Colors.grey[600],
         selectedFontSize: 12,
@@ -92,7 +79,59 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
+
+// =================================================================
+// CÁC WIDGET BÊN DƯỚI GIỮ NGUYÊN, KHÔNG CẦN THAY ĐỔI GÌ
+// =================================================================
+
+
+// MỚI: Tách toàn bộ nội dung của màn hình Home ra một Widget riêng
+// Điều này giúp cấu trúc code sạch sẽ và logic điều hướng chính xác
+class _HomeScreenContent extends StatelessWidget {
+  const _HomeScreenContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Header Greeting Card
+              const HeaderGreetingCard(userName: "Nam"),
+              const SizedBox(height: 16),
+
+              // 2. Daily Streak Section
+              const DailyStreakCard(streakDays: 12),
+              const SizedBox(height: 16),
+
+              // 3. Stats Grid (4 stats)
+              const StatsGrid(),
+              const SizedBox(height: 16),
+
+              // 4. Continue Learning Card
+              const ContinueLearningCard(),
+              const SizedBox(height: 24),
+
+              // 5. Feature Shortcuts Row
+              const FeatureShortcuts(),
+              const SizedBox(height: 24),
+
+              // 6. CEFR Progress Card
+              const CefrProgressCard(),
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+// --- CÁC WIDGET THÀNH PHẦN (Giữ nguyên không thay đổi) ---
 
 // 1. Header Greeting Card
 class HeaderGreetingCard extends StatelessWidget {
@@ -249,7 +288,7 @@ class StatsGrid extends StatelessWidget {
           ),
         ),
 
-        _StatTile(
+        const _StatTile(
           icon: Icons.timer,
           title: "Study Time Today",
           value: "18 min",
@@ -407,8 +446,8 @@ class FeatureShortcuts extends StatelessWidget {
         GestureDetector(
           onTap: (){
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const GrammarCheckerScreen())
+                context,
+                MaterialPageRoute(builder: (context) => const GrammarCheckerScreen())
             );
           },
           child: const _ShortcutItem(icon: Icons.rule, label: "Grammar"),
@@ -542,3 +581,4 @@ class _CefrLevelRow extends StatelessWidget {
     );
   }
 }
+
