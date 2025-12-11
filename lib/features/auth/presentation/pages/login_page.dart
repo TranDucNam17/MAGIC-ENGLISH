@@ -1,4 +1,7 @@
 import 'package:btl_magicenglish/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:btl_magicenglish/features/auth/presentation/pages/register_page.dart';
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/home_dashboard_page.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -132,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         // TODO: Điều hướng đến màn hình đăng ký
-                        print('Navigate to Register');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                       },
                       child: const Text(
                         'Register',
@@ -177,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: MaterialButton(
                     onPressed: () {
                       // TODO: Xử lý logic đăng nhập
-                      print('Login button pressed');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeDashboardScreen()));
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
