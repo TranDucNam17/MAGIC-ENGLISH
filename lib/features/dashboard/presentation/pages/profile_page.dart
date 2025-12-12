@@ -1,5 +1,6 @@
 // lib/presentation/dashboard/profile_page.dart
 
+import 'package:btl_magicenglish/features/common/presentation/pages/update_to_premium_page.dart';
 import 'package:btl_magicenglish/features/settings/presentation/pages/account_settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -168,7 +169,9 @@ class ProfilePage extends StatelessWidget {
   Widget _buildPremiumButton(BuildContext context) {
     const Color primaryBlue = Color(0xFF4A90E2);
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateToPremiumPage()));
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryBlue,
         foregroundColor: Colors.white,
