@@ -63,10 +63,13 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
         backgroundColor: Colors.white,
         elevation: 2.0,
         shadowColor: Colors.grey.withOpacity(0.2),
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        automaticallyImplyLeading: false,
+
         title: const Text(
           'Magic Vocab',
           style: TextStyle(
@@ -103,27 +106,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
             ),
           ],
         ),
-      ),
-      // BottomNavigationBar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) { /* TODO: Handle navigation */ },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: primaryBlue,
-        unselectedItemColor: Colors.grey[600],
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        backgroundColor: Colors.white,
-        elevation: 8.0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined), label: 'Vocab'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.spellcheck_outlined), label: 'Grammar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: 'Profile'),
-        ],
       ),
     );
   }
@@ -167,7 +149,7 @@ class SearchFilterAddSection extends StatelessWidget {
               // Filter Button
               OutlinedButton.icon(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterOptionScreen()));
+                  Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => const FilterOptionScreen()));
                 },
                 icon: const Icon(Icons.filter_list),
                 label: const Text("Filter"),
@@ -189,10 +171,7 @@ class SearchFilterAddSection extends StatelessWidget {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => const AddWordScreen(),
-                      fullscreenDialog: true)
-                  );
+                  Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => const AddWordScreen()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0D47A1),
