@@ -2,6 +2,7 @@
 
 import 'package:btl_magicenglish/features/common/presentation/pages/update_to_premium_page.dart';
 import 'package:btl_magicenglish/features/settings/presentation/pages/account_settings_page.dart';
+import 'package:btl_magicenglish/features/settings/presentation/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 // SỬA: Biến ProfilePage thành một StatelessWidget không chứa Scaffold
@@ -159,7 +160,13 @@ class ProfilePage extends StatelessWidget {
           _MenuItem(icon: Icons.show_chart, title: "Learning Progress", onTap: () => _navigateTo(context, "Progress")),
           _MenuItem(icon: Icons.emoji_events_outlined, title: "Achievement", onTap: () => _navigateTo(context, "Achievement")),
           _MenuItem(icon: Icons.lock_outline, title: "Privacy & Security", onTap: () => _navigateTo(context, "Privacy")),
-          _MenuItem(icon: Icons.settings_outlined, title: "Settings", hasDivider: false, onTap: () => _navigateTo(context, "Settings")),
+          _MenuItem(
+              icon: Icons.settings_outlined,
+              title: "Settings", hasDivider: false,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => const SettingsPage()));
+              }),
         ],
       ),
     );
