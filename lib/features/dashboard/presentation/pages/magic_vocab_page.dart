@@ -4,7 +4,7 @@ import 'package:btl_magicenglish/features/dashboard/presentation/pages/filter_op
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/view_word_detail_page.dart';
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (MAGIC VOCAB SCREEN) ---
+// MagicVocab screen
 class MagicVocabScreen extends StatefulWidget {
   const MagicVocabScreen({super.key});
 
@@ -111,7 +111,7 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
+// các widget thành phần
 
 // 2. Search, Filter and Add Section
 class SearchFilterAddSection extends StatelessWidget {
