@@ -49,28 +49,6 @@ class AiAssistantScreen extends StatelessWidget {
           ),
         ),
       ),
-      // BottomNavigationBar
-      bottomNavigationBar: BottomNavigationBar(
-        // Giả sử không có tab nào được chọn vì đây là màn hình phụ
-        currentIndex: 0, // Hoặc một chỉ số hợp lệ khác
-        onTap: (index) { /* TODO: Handle navigation */ },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: primaryBlue,
-        unselectedItemColor: Colors.grey[600],
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        backgroundColor: Colors.white,
-        elevation: 8.0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined), label: 'Vocab'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.spellcheck), label: 'Grammar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), label: 'Profile'),
-        ],
-      ),
     );
   }
 }
