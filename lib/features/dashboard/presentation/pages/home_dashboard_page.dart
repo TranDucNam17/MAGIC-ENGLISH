@@ -25,7 +25,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   int _selectedIndex = 0;
 
   // Danh sách các trang tương ứng với các tab
-  // _HomeScreenContent đã được định nghĩa ở dưới
   static const List<Widget> _widgetOptions = <Widget>[
     _HomeScreenContent(),       // Index 0: Trang Home
     MagicVocabScreen(),         // Index 1: Trang Vocab
@@ -47,17 +46,13 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     return Scaffold(
       backgroundColor: lightBlueBackground,
 
-      // =================================================================
-      // SỬA LỖI CHÍNH: body bây giờ sẽ hiển thị widget tương ứng với tab được chọn
-      // =================================================================
+      // body hiển thị widget tương ứng với tab được chọn
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
       ),
-      // Hoặc cách khác:
-      // body: _widgetOptions.elementAt(_selectedIndex),
 
-      // Bottom Navigation Bar (Giữ nguyên)
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -79,14 +74,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 }
 
-
-// =================================================================
-// CÁC WIDGET BÊN DƯỚI GIỮ NGUYÊN, KHÔNG CẦN THAY ĐỔI GÌ
-// =================================================================
-
-
-// MỚI: Tách toàn bộ nội dung của màn hình Home ra một Widget riêng
-// Điều này giúp cấu trúc code sạch sẽ và logic điều hướng chính xác
+// Tách toàn bộ nội dung của màn hình Home ra một Widget riêng
 class _HomeScreenContent extends StatelessWidget {
   const _HomeScreenContent();
 
@@ -131,7 +119,7 @@ class _HomeScreenContent extends StatelessWidget {
 }
 
 
-// --- CÁC WIDGET THÀNH PHẦN (Giữ nguyên không thay đổi) ---
+// các widget thành phần
 
 // 1. Header Greeting Card
 class HeaderGreetingCard extends StatelessWidget {
