@@ -1,8 +1,10 @@
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/add_word_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/edit_word_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/filter_option_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/view_word_detail_page.dart';
+
+import 'package:btl_magicenglish/features/vocab/presentation/pages/view_word_detail_page.dart';
 import 'package:flutter/material.dart';
+
+import 'add_word_page.dart';
+import 'edit_word_page.dart';
+import 'filter_option_page.dart';
 
 // MagicVocab screen
 class MagicVocabScreen extends StatefulWidget {
@@ -19,34 +21,19 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
   // Dữ liệu giả cho danh sách từ vựng
   final List<Map<String, String>> vocabList = [
     {
-      "word": "structure",
-      "ipa": "/ˈstrʌk.tʃər/",
-      "meaning": "Framework",
-      "cefr": "B2"
+      "word": "structure", "ipa": "/ˈstrʌk.tʃər/", "meaning": "Framework", "cefr": "B2"
     },
     {
-      "word": "serendipity",
-      "ipa": "/ˌser.ənˈdɪp.ə.ti/",
-      "meaning": "Finding good things without looking",
-      "cefr": "C1"
+      "word": "serendipity", "ipa": "/ˌser.ənˈdɪp.ə.ti/", "meaning": "Finding good things without looking", "cefr": "C1"
     },
     {
-      "word": "ubiquitous",
-      "ipa": "/juːˈbɪk.wə.təs/",
-      "meaning": "Present, appearing, or found everywhere",
-      "cefr": "C1"
+      "word": "ubiquitous", "ipa": "/juːˈbɪk.wə.təs/", "meaning": "Present, appearing, or found everywhere", "cefr": "C1"
     },
     {
-      "word": "ephemeral",
-      "ipa": "/əˈfem.ər.əl/",
-      "meaning": "Lasting for a very short time",
-      "cefr": "B2"
+      "word": "ephemeral", "ipa": "/əˈfem.ər.əl/", "meaning": "Lasting for a very short time", "cefr": "B2"
     },
     {
-      "word": "book",
-      "ipa": "/bʊk/",
-      "meaning": "A written or printed work",
-      "cefr": "A1"
+      "word": "book", "ipa": "/bʊk/", "meaning": "A written or printed work", "cefr": "A1"
     },
   ];
 
@@ -63,12 +50,12 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
         backgroundColor: Colors.white,
         elevation: 2.0,
         shadowColor: Colors.grey.withOpacity(0.2),
-
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        automaticallyImplyLeading: false,
+
+        // automaticallyImplyLeading: false,
 
         title: const Text(
           'Magic Vocab',
@@ -149,7 +136,9 @@ class SearchFilterAddSection extends StatelessWidget {
               // Filter Button
               OutlinedButton.icon(
                 onPressed: () {
-                  Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => const FilterOptionScreen()));
+                  Navigator.of(
+                      context,
+                      rootNavigator: true).push(MaterialPageRoute(builder: (context) => const FilterOptionScreen()));
                 },
                 icon: const Icon(Icons.filter_list),
                 label: const Text("Filter"),
@@ -258,9 +247,11 @@ class VocabularyCard extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ViewWordDetailScreen(wordData: vocabData), fullscreenDialog: true));
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                          builder: (context) => ViewWordDetailScreen(wordData: vocabData),
+                          fullscreenDialog: true)
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: accentPurple.withOpacity(0.8),
@@ -274,9 +265,11 @@ class VocabularyCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EditWordScreen(wordData: vocabData), fullscreenDialog: true));
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                          builder: (context) => EditWordScreen(wordData: vocabData,),
+                          fullscreenDialog: true)
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryBlue,

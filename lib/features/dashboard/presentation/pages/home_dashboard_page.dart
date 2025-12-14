@@ -1,17 +1,14 @@
-// lib/features/dashboard/presentation/pages/home_dashboard_page.dart
-
-// Import tất cả các trang của bạn (giữ nguyên)
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/achievements_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/ai_assistant_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/cefr_level_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/grammar_checker_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/magic_vocab_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/notifications_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/part_of_speech_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/profile_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/progress_tracking_page.dart';
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/word_learned_page.dart';
+import 'cefr_level_page.dart';
+import 'part_of_speech_page.dart';
+import 'word_learned_page.dart';
 import 'package:flutter/material.dart';
+import '../../../achievements/presentation/pages/achievements_page.dart';
+import '../../../ai_assistant/presentation/pages/ai_assistant_page.dart';
+import '../../../grammar/presentation/pages/grammar_checker_page.dart';
+import '../../../notifications/presentation/pages/notifications_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../progress/presentation/pages/progress_tracking_page.dart';
+import '../../../vocab/presentation/pages/magic_vocab_page.dart';
 
 // --- MÀN HÌNH CHÍNH (HOME DASHBOARD SCREEN) ---
 class HomeDashboardScreen extends StatefulWidget {
@@ -24,12 +21,11 @@ class HomeDashboardScreen extends StatefulWidget {
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   int _selectedIndex = 0;
 
-  // Danh sách các trang tương ứng với các tab
   static const List<Widget> _widgetOptions = <Widget>[
-    _HomeScreenContent(),       // Index 0: Trang Home
-    MagicVocabScreen(),         // Index 1: Trang Vocab
-    GrammarCheckerScreen(),     // Index 2: Trang Grammar
-    ProfilePage(),              // Index 3: Trang Profile
+    _HomeScreenContent(), // <-- Không cần callback nữa
+    MagicVocabScreen(),
+    GrammarCheckerScreen(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -38,10 +34,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
+
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
@@ -76,10 +74,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
 // Tách toàn bộ nội dung của màn hình Home ra một Widget riêng
 class _HomeScreenContent extends StatelessWidget {
-  const _HomeScreenContent();
+
+  const _HomeScreenContent({super.key,});
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -414,7 +414,7 @@ class ContinueLearningCard extends StatelessWidget {
 
 // 5. Feature Shortcuts
 class FeatureShortcuts extends StatelessWidget {
-  const FeatureShortcuts({super.key});
+  const FeatureShortcuts({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -423,10 +423,10 @@ class FeatureShortcuts extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
+            // onNavigateToTab(1);
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MagicVocabScreen())
-            );
+                MaterialPageRoute(builder: (context) => const MagicVocabScreen()));
           },
           child: const _ShortcutItem(icon: Icons.school, label: "Magic Vocab"),
         ),

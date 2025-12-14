@@ -1,7 +1,9 @@
 // lib/presentation/dashboard/grammar_checker_screen.dart
 
-import 'package:btl_magicenglish/features/dashboard/presentation/pages/grammar_check_detail_page.dart';
+
 import 'package:flutter/material.dart';
+
+import 'grammar_check_detail_page.dart';
 
 // --- MÀN HÌNH CHÍNH (GRAMMAR CHECKER SCREEN) ---
 class GrammarCheckerScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
           icon: const Icon(Icons.arrow_back, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        // automaticallyImplyLeading: false,
         title: const Text(
           'Grammar Checker',
           style: TextStyle(
