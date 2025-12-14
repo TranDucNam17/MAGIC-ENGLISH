@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/achievements_page.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (ACHIEVEMENTS PAGE) ---
 class AchievementsPage extends StatelessWidget {
   const AchievementsPage({super.key});
 
@@ -38,7 +35,6 @@ class AchievementsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // --- CÁC THÀNH PHẦN GIAO DIỆN ---
                 const _SummaryCard(),
                 const SizedBox(height: 24),
                 _buildBadgeSection("Vocabulary"),
@@ -55,12 +51,10 @@ class AchievementsPage extends StatelessWidget {
     );
   }
 
-  // Hàm build cho một khu vực huy hiệu (tiêu đề + 3 huy hiệu)
   Widget _buildBadgeSection(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tiêu đề khu vực
         Text(
           title,
           style: const TextStyle(
@@ -70,12 +64,11 @@ class AchievementsPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        // Hàng chứa 3 huy hiệu
         const Row(
           children: [
             Expanded(
               child: _BadgeCard(
-                imagePath: "assets/images/gold_badge.png", // Đường dẫn giả
+                imagePath: "assets/images/gold_badge.png",
                 label: "Gold Badge",
               ),
             ),
@@ -100,9 +93,6 @@ class AchievementsPage extends StatelessWidget {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Thẻ tóm tắt
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard();
 
@@ -136,7 +126,6 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
-// Widget cho một thẻ huy hiệu
 class _BadgeCard extends StatelessWidget {
   final String imagePath;
   final String label;
@@ -166,12 +155,10 @@ class _BadgeCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Hiển thị ảnh huy hiệu. Sử dụng một icon placeholder nếu ảnh không tồn tại.
           Image.asset(
             imagePath,
             height: 50,
             errorBuilder: (context, error, stackTrace) {
-              // Widget hiển thị khi không tìm thấy ảnh
               return const Icon(Icons.emoji_events,
                   size: 50, color: Colors.amber);
             },

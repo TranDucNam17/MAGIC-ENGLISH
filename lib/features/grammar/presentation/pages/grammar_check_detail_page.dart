@@ -1,13 +1,6 @@
-// lib/presentation/dashboard/grammar_check_detail_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (GRAMMAR CHECK DETAIL SCREEN) ---
 class GrammarCheckDetailScreen extends StatelessWidget {
-  // TODO: Sau này, bạn sẽ truyền một đối tượng Lịch sử kiểm tra vào đây
-  // final GrammarCheckHistoryItem historyItem;
-  // const GrammarCheckDetailScreen({super.key, required this.historyItem});
-
   const GrammarCheckDetailScreen({super.key});
 
   @override
@@ -18,17 +11,14 @@ class GrammarCheckDetailScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
         shadowColor: Colors.grey.withOpacity(0.2),
-        // Nút 'X' để đóng
         leading: IconButton(
           icon: const Icon(Icons.close, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        // Tiêu đề căn trái
         title: const Text(
           'Grammar Check Detail',
           style: TextStyle(
@@ -47,7 +37,6 @@ class GrammarCheckDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // --- CÁC THÀNH PHẦN GIAO DIỆN ---
                 const _HeaderSummaryCard(),
                 const SizedBox(height: 16),
                 const _OriginalTextSection(),
@@ -66,9 +55,6 @@ class GrammarCheckDetailScreen extends StatelessWidget {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Thẻ tóm tắt thông tin
 class _HeaderSummaryCard extends StatelessWidget {
   const _HeaderSummaryCard();
 
@@ -77,7 +63,7 @@ class _HeaderSummaryCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: const Color(0xFFE3F2FD), // Màu nền xanh nhạt
+      color: const Color(0xFFE3F2FD),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -117,7 +103,6 @@ class _HeaderSummaryCard extends StatelessWidget {
   }
 }
 
-// 2. Phần văn bản gốc
 class _OriginalTextSection extends StatelessWidget {
   const _OriginalTextSection();
 
@@ -146,7 +131,6 @@ class _OriginalTextSection extends StatelessWidget {
   }
 }
 
-// 3. Phần các lỗi tìm thấy
 class _ErrorsFoundSection extends StatelessWidget {
   const _ErrorsFoundSection();
 
@@ -200,7 +184,6 @@ class _ErrorsFoundSection extends StatelessWidget {
   }
 }
 
-// 4. Phần sửa lỗi
 class _CorrectionSection extends StatelessWidget {
   const _CorrectionSection();
 
@@ -267,7 +250,6 @@ class _CorrectionSection extends StatelessWidget {
   }
 }
 
-// 5. Nút hành động ở dưới cùng
 class _BottomAction extends StatelessWidget {
   const _BottomAction();
 
@@ -289,7 +271,6 @@ class _BottomAction extends StatelessWidget {
   }
 }
 
-// Widget tái sử dụng cho tiêu đề các phần
 class _SectionTitle extends StatelessWidget {
   final String title;
   const _SectionTitle({required this.title});

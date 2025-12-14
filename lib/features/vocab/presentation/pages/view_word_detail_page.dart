@@ -1,10 +1,6 @@
-// lib/presentation/dashboard/view_word_detail_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (VIEW WORD DETAIL SCREEN) ---
 class ViewWordDetailScreen extends StatelessWidget {
-  // Dữ liệu giả cho từ vựng được xem
   final Map<String, String> wordData;
 
   const ViewWordDetailScreen({
@@ -21,7 +17,6 @@ class ViewWordDetailScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -41,10 +36,8 @@ class ViewWordDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // --- CÁC TRƯỜNG DỮ LIỆU (CHỈ ĐỌC) ---
                   _ReadOnlyTextField(label: "Word", value: wordData['word']),
                   const SizedBox(height: 12),
-                  // Nút AI Enrich bị vô hiệu hóa
                   const _AiEnrichButton(enabled: false),
                   const SizedBox(height: 16),
                   _ReadOnlyTextField(label: "IPA", value: wordData['ipa']),
@@ -74,10 +67,8 @@ class ViewWordDetailScreen extends StatelessWidget {
                     maxLines: 4,
                   ),
                   const SizedBox(height: 24),
-                  // --- CÁC NÚT HÀNH ĐỘNG ---
                   Row(
                     children: [
-                      // Nút Cancel (vẫn hoạt động)
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () => Navigator.of(context).pop(),
@@ -96,7 +87,6 @@ class ViewWordDetailScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      // Nút Save word (bị vô hiệu hóa)
                       Expanded(
                         child: ElevatedButton(
                           onPressed: null, // Vô hiệu hóa nút
@@ -130,9 +120,7 @@ class ViewWordDetailScreen extends StatelessWidget {
     );
   }
 
-  // Widget riêng cho Dropdown CEFR (chỉ đọc)
   Widget _buildCefrDropdown(String? value) {
-    // AbsorbPointer ngăn mọi tương tác chạm vào widget con của nó
     return AbsorbPointer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +132,7 @@ class ViewWordDetailScreen extends StatelessWidget {
           const SizedBox(height: 4),
           DropdownButtonFormField<String>(
             value: value,
-            onChanged: null, // Vô hiệu hóa sự kiện thay đổi
+            onChanged: null,
             items: <String>['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
                 .map<DropdownMenuItem<String>>((String val) {
               return DropdownMenuItem<String>(
@@ -164,7 +152,6 @@ class ViewWordDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Colors.grey.shade300),
               ),
-              // Màu nền khi bị vô hiệu hóa
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Colors.grey.shade300),
@@ -177,9 +164,6 @@ class ViewWordDetailScreen extends StatelessWidget {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN (CHỈ ĐỌC) ---
-
-// Widget chung cho các trường TextFormField (chỉ đọc)
 class _ReadOnlyTextField extends StatelessWidget {
   final String label;
   final String? value;
@@ -203,7 +187,7 @@ class _ReadOnlyTextField extends StatelessWidget {
         const SizedBox(height: 4),
         TextFormField(
           controller: TextEditingController(text: value),
-          readOnly: true, // Quan trọng: chỉ cho phép đọc
+          readOnly: true,
           maxLines: maxLines,
           style: const TextStyle(color: Color(0xFF424242)), // Màu chữ đậm hơn một chút
           decoration: InputDecoration(
@@ -218,7 +202,6 @@ class _ReadOnlyTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey.shade300),
             ),
-            // Border khi bị disable, giống như enabled để không thay đổi màu
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey.shade300),
@@ -230,7 +213,6 @@ class _ReadOnlyTextField extends StatelessWidget {
   }
 }
 
-// Widget cho nút AI Enrich
 class _AiEnrichButton extends StatelessWidget {
   final bool enabled;
   const _AiEnrichButton({this.enabled = true});
@@ -239,11 +221,10 @@ class _AiEnrichButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color accentGreen = Color(0xFF66DDAA);
     return ElevatedButton(
-      onPressed: enabled ? () {} : null, // Vô hiệu hóa nút
+      onPressed: enabled ? () {} : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: accentGreen,
         foregroundColor: const Color(0xFF003D23),
-        // Giảm độ sáng khi bị vô hiệu hóa
         disabledBackgroundColor: accentGreen.withOpacity(0.4),
         shape: const StadiumBorder(),
         padding: const EdgeInsets.symmetric(vertical: 10),

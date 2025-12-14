@@ -1,7 +1,6 @@
 import 'package:btl_magicenglish/features/streak/presentation/pages/view_reward_page.dart';
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (DAILY STREAK SCREEN) ---
 class DailyStreakScreen extends StatefulWidget {
   const DailyStreakScreen({super.key});
 
@@ -10,8 +9,6 @@ class DailyStreakScreen extends StatefulWidget {
 }
 
 class _DailyStreakScreenState extends State<DailyStreakScreen> {
-  // Giả sử tab "Home" vẫn được chọn khi vào màn hình này từ Home.
-  // Nếu màn hình này là một tab riêng, bạn cần thay đổi logic này.
   final int _selectedIndex = 0;
 
   @override
@@ -21,9 +18,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
     const Color darkText = Color(0xFF1A252F);
 
     return Scaffold(
-      // 1. Layout: Nền xanh rất nhạt
       backgroundColor: lightBlueBackground,
-      // 2. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -50,23 +45,18 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1) Streak highlight card
                 const StreakHighlightCard(streakDays: 12),
                 const SizedBox(height: 24),
 
-                // 2) Today's Progress section
                 const TodayProgressSection(progress: 0.67),
                 const SizedBox(height: 24),
 
-                // 3) This Week section
                 const ThisWeekSection(),
                 const SizedBox(height: 24),
 
-                // 4) Rewards card
                 const RewardsCard(),
                 const SizedBox(height: 16),
 
-                // 5) Daily Reminder card
                 const DailyReminderCard(),
                 const SizedBox(height: 16),
               ],
@@ -74,12 +64,9 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
           ),
         ),
       ),
-      // 3. BottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) {
-          // TODO: Xử lý điều hướng khi nhấn vào các tab khác
-        },
+        onTap: (index) {},
         type: BottomNavigationBarType.fixed,
         selectedItemColor: primaryBlue,
         unselectedItemColor: Colors.grey[600],
@@ -101,9 +88,6 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Streak Highlight Card
 class StreakHighlightCard extends StatelessWidget {
   final int streakDays;
   const StreakHighlightCard({super.key, required this.streakDays});
@@ -157,7 +141,6 @@ class StreakHighlightCard extends StatelessWidget {
   }
 }
 
-// 2. Today's Progress Section
 class TodayProgressSection extends StatelessWidget {
   final double progress;
   const TodayProgressSection({super.key, required this.progress});
@@ -223,13 +206,11 @@ class TodayProgressSection extends StatelessWidget {
   }
 }
 
-// 3. This Week Section
 class ThisWeekSection extends StatelessWidget {
   const ThisWeekSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Dữ liệu giả cho tuần
     final List<Map<String, dynamic>> weekData = [
       {"day": "Mon", "completed": true},
       {"day": "Tue", "completed": true},
@@ -239,7 +220,6 @@ class ThisWeekSection extends StatelessWidget {
       {"day": "Sat", "completed": false},
       {"day": "Sun", "completed": false},
     ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -267,7 +247,6 @@ class ThisWeekSection extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi ngày trong tuần
 class _DayItem extends StatelessWidget {
   final String label;
   final bool isCompleted;
@@ -323,7 +302,6 @@ class _DayItem extends StatelessWidget {
   }
 }
 
-// 4. Rewards Card
 class RewardsCard extends StatelessWidget {
   const RewardsCard({super.key});
 
@@ -386,7 +364,6 @@ class RewardsCard extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi dòng Reward
 class _RewardLine extends StatelessWidget {
   final String text;
   final IconData icon;
@@ -413,7 +390,6 @@ class _RewardLine extends StatelessWidget {
   }
 }
 
-// 5. Daily Reminder Card
 class DailyReminderCard extends StatelessWidget {
   const DailyReminderCard({super.key});
 
@@ -449,7 +425,6 @@ class DailyReminderCard extends StatelessWidget {
               ],
             ),
           ),
-          // Có thể thêm một Switch hoặc Icon ở đây
         ],
       ),
     );

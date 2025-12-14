@@ -1,12 +1,9 @@
-
 import 'package:btl_magicenglish/features/vocab/presentation/pages/view_word_detail_page.dart';
 import 'package:flutter/material.dart';
-
 import 'add_word_page.dart';
 import 'edit_word_page.dart';
 import 'filter_option_page.dart';
 
-// MagicVocab screen
 class MagicVocabScreen extends StatefulWidget {
   const MagicVocabScreen({super.key});
 
@@ -15,10 +12,8 @@ class MagicVocabScreen extends StatefulWidget {
 }
 
 class _MagicVocabScreenState extends State<MagicVocabScreen> {
-  // Tab "Vocab" được chọn
   final int _selectedIndex = 1;
 
-  // Dữ liệu giả cho danh sách từ vựng
   final List<Map<String, String>> vocabList = [
     {
       "word": "structure", "ipa": "/ˈstrʌk.tʃər/", "meaning": "Framework", "cefr": "B2"
@@ -45,7 +40,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -54,9 +48,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
           icon: const Icon(Icons.arrow_back, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-
-        // automaticallyImplyLeading: false,
-
         title: const Text(
           'Magic Vocab',
           style: TextStyle(
@@ -70,10 +61,8 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // 2. Search, Filter and Add Section
             const SearchFilterAddSection(),
 
-            // 3. Vocabulary List
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -98,9 +87,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
   }
 }
 
-// các widget thành phần
-
-// 2. Search, Filter and Add Section
 class SearchFilterAddSection extends StatelessWidget {
   const SearchFilterAddSection({super.key});
 
@@ -112,7 +98,6 @@ class SearchFilterAddSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Search Field
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
@@ -133,7 +118,6 @@ class SearchFilterAddSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              // Filter Button
               OutlinedButton.icon(
                 onPressed: () {
                   Navigator.of(
@@ -179,7 +163,6 @@ class SearchFilterAddSection extends StatelessWidget {
   }
 }
 
-// 3. Vocabulary Card
 class VocabularyCard extends StatelessWidget {
   final Map<String, String> vocabData;
 
@@ -193,9 +176,6 @@ class VocabularyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
     const Color accentPurple = Color(0xFF673AB7);
-
-    // lấy dữ liệu từ Map 'vocabData'
-    // sử dụng '??' để cung cấp giá trị mặc định, tránh null
     final String word = vocabData['word'] ?? 'N/A';
     final String ipa = vocabData['ipa'] ?? '';
     final String meaning = vocabData['meaning'] ?? '';
@@ -210,7 +190,6 @@ class VocabularyCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Row: Word, IPA, and CEFR Level
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -238,10 +217,8 @@ class VocabularyCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            // Middle: Meaning
             Text("Meaning: $meaning", style: TextStyle(fontSize: 14, color: Colors.grey[800])),
             const SizedBox(height: 12),
-            // Bottom Row: Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

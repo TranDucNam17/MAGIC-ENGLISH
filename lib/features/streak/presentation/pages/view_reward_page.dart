@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (VIEW REWARDS SCREEN) ---
 class ViewRewardsScreen extends StatefulWidget {
   const ViewRewardsScreen({super.key});
 
@@ -9,9 +8,7 @@ class ViewRewardsScreen extends StatefulWidget {
 }
 
 class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
-  // Giả sử tab "Home" vẫn được chọn
   final int _selectedIndex = 0;
-  // Theo dõi ngày được chọn trong Day Selector
   int _selectedMilestone = 7;
 
   @override
@@ -21,9 +18,7 @@ class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
     const Color darkText = Color(0xFF1A252F);
 
     return Scaffold(
-      // 1. General: Nền xanh rất nhạt
       backgroundColor: lightBlueBackground,
-      // 2. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -50,11 +45,9 @@ class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1) Streak Rewards intro card
                 const IntroCard(),
                 const SizedBox(height: 24),
 
-                // 2) Day selector row
                 DaySelector(
                   selectedMilestone: _selectedMilestone,
                   onSelect: (day) {
@@ -64,20 +57,15 @@ class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-
-                // 3) Rewards list
                 const RewardsList(),
               ],
             ),
           ),
         ),
       ),
-      // 3. BottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) {
-          // TODO: Xử lý điều hướng khi nhấn vào các tab khác
-        },
+        onTap: (index) {},
         type: BottomNavigationBarType.fixed,
         selectedItemColor: primaryBlue,
         unselectedItemColor: Colors.grey[600],
@@ -99,9 +87,6 @@ class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Intro Card
 class IntroCard extends StatelessWidget {
   const IntroCard({super.key});
 
@@ -142,7 +127,6 @@ class IntroCard extends StatelessWidget {
   }
 }
 
-// 2. Day Selector
 class DaySelector extends StatelessWidget {
   final int selectedMilestone;
   final Function(int) onSelect;
@@ -161,7 +145,6 @@ class DaySelector extends StatelessWidget {
       child: Row(
         children: milestones.map((day) {
           final bool isSelected = day == selectedMilestone;
-          // Dữ liệu giả: giả sử ngày 7 đã hoàn thành, còn lại thì chưa
           final bool isCompleted = day == 7;
 
           return GestureDetector(
@@ -201,7 +184,6 @@ class DaySelector extends StatelessWidget {
   }
 }
 
-// 3. Rewards List
 class RewardsList extends StatelessWidget {
   const RewardsList({super.key});
 
@@ -243,7 +225,6 @@ class RewardsList extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi thẻ Reward
 class RewardItemCard extends StatelessWidget {
   final String title;
   final String status;

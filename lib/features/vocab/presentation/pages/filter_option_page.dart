@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/filter_option_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (FILTER OPTION SCREEN) ---
 class FilterOptionScreen extends StatefulWidget {
   const FilterOptionScreen({super.key});
 
@@ -11,7 +8,6 @@ class FilterOptionScreen extends StatefulWidget {
 }
 
 class _FilterOptionScreenState extends State<FilterOptionScreen> {
-  // --- BIẾN TRẠNG THÁI CHO CÁC BỘ LỌC ---
   final Set<String> _selectedCefrLevels = {};
   final Set<String> _selectedPos = {};
   String _sortByValue = "A - Z";
@@ -19,7 +15,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
   bool _isAiGenerated = false;
   bool _isUserAdded = false;
 
-  // Hàm để reset tất cả các bộ lọc về mặc định
   void _resetFilters() {
     setState(() {
       _selectedCefrLevels.clear();
@@ -39,7 +34,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -64,25 +58,21 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
           const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           child: Column(
             children: [
-              // --- VÙNG NỘI DUNG CÓ THỂ CUỘN ---
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 1. CEFR Levels Section
                       const _SectionTitle(title: "CEFR Levels"),
                       const SizedBox(height: 8),
                       _buildCefrChips(),
                       const SizedBox(height: 16),
 
-                      // 2. Part of Speech Section
                       const _SectionTitle(title: "Part of Speech"),
                       const SizedBox(height: 8),
                       _buildPosChips(),
                       const SizedBox(height: 16),
 
-                      // 3. Sort by and Topic Section
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -93,7 +83,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // 4. Source Section
                       const _SectionTitle(title: "Source"),
                       const SizedBox(height: 8),
                       _buildSourceSection(),
@@ -102,7 +91,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                 ),
               ),
 
-              // --- CÁC NÚT HÀNH ĐỘNG Ở DƯỚI CÙNG ---
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -126,7 +114,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // TODO: Áp dụng bộ lọc và đóng màn hình
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
@@ -151,10 +138,7 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
     );
   }
 
-  // --- CÁC HÀM BUILD CHO TỪNG PHẦN ---
-
   Widget _buildCefrChips() {
-    // Dữ liệu và màu sắc cho các chip CEFR
     final Map<String, Color> cefrColors = {
       'A1': Colors.green.shade300,
       'A2': Colors.green.shade400,
@@ -195,7 +179,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
   }
 
   Widget _buildPosChips() {
-    // Dữ liệu và màu sắc cho các chip loại từ
     final Map<String, Color> posColors = {
       'noun': Colors.blue.shade400,
       'verb': Colors.green.shade400,
@@ -258,14 +241,13 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
         const _SectionTitle(title: "Topic"),
         const SizedBox(height: 8),
         _buildRadioTile("AI Generate", _topicValue, (val) => setState(() => _topicValue = val)),
-        // Thêm các topic khác ở đây nếu cần
       ],
     );
   }
 
   Widget _buildRadioTile(String title, String groupValue, Function(String) onChanged) {
     return SizedBox(
-      height: 36, // Giảm chiều cao để các radio gần nhau hơn
+      height: 36,
       child: RadioListTile<String>(
         title: Text(title, style: TextStyle(fontSize: 14)),
         value: title,
@@ -309,7 +291,6 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
   }
 }
 
-// --- WIDGET THÀNH PHẦN (TÁI SỬ DỤNG) ---
 class _SectionTitle extends StatelessWidget {
   final String title;
   const _SectionTitle({required this.title});

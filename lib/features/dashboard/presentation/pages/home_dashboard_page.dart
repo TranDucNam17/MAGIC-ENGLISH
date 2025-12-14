@@ -10,7 +10,6 @@ import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../progress/presentation/pages/progress_tracking_page.dart';
 import '../../../vocab/presentation/pages/magic_vocab_page.dart';
 
-// --- MÀN HÌNH CHÍNH (HOME DASHBOARD SCREEN) ---
 class HomeDashboardScreen extends StatefulWidget {
   const HomeDashboardScreen({super.key});
 
@@ -22,7 +21,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    _HomeScreenContent(), // <-- Không cần callback nữa
+    _HomeScreenContent(),
     MagicVocabScreen(),
     GrammarCheckerScreen(),
     ProfilePage(),
@@ -34,23 +33,18 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
 
-
     return Scaffold(
       backgroundColor: lightBlueBackground,
-
-      // body hiển thị widget tương ứng với tab được chọn
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
       ),
 
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -72,7 +66,6 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   }
 }
 
-// Tách toàn bộ nội dung của màn hình Home ra một Widget riêng
 class _HomeScreenContent extends StatelessWidget {
 
   const _HomeScreenContent({super.key,});
@@ -87,27 +80,22 @@ class _HomeScreenContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. Header Greeting Card
+
               const HeaderGreetingCard(userName: "Nam"),
               const SizedBox(height: 16),
 
-              // 2. Daily Streak Section
               const DailyStreakCard(streakDays: 12),
               const SizedBox(height: 16),
 
-              // 3. Stats Grid (4 stats)
               const StatsGrid(),
               const SizedBox(height: 16),
 
-              // 4. Continue Learning Card
               const ContinueLearningCard(),
               const SizedBox(height: 24),
 
-              // 5. Feature Shortcuts Row
               const FeatureShortcuts(),
               const SizedBox(height: 24),
 
-              // 6. CEFR Progress Card
               const CefrProgressCard(),
               const SizedBox(height: 24),
             ],
@@ -118,10 +106,6 @@ class _HomeScreenContent extends StatelessWidget {
   }
 }
 
-
-// các widget thành phần
-
-// 1. Header Greeting Card
 class HeaderGreetingCard extends StatelessWidget {
   final String userName;
   const HeaderGreetingCard({super.key, required this.userName});
@@ -182,7 +166,6 @@ class HeaderGreetingCard extends StatelessWidget {
   }
 }
 
-// 2. Daily Streak Card
 class DailyStreakCard extends StatelessWidget {
   final int streakDays;
   const DailyStreakCard({super.key, required this.streakDays});
@@ -214,7 +197,7 @@ class DailyStreakCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           LinearProgressIndicator(
-            value: 0.7, // Giả sử tiến độ streak
+            value: 0.7,
             backgroundColor: Colors.grey[300],
             color: Colors.orangeAccent,
             minHeight: 6,
@@ -226,7 +209,6 @@ class DailyStreakCard extends StatelessWidget {
   }
 }
 
-// 3. Stats Grid
 class StatsGrid extends StatelessWidget {
   const StatsGrid({super.key});
 
@@ -287,7 +269,6 @@ class StatsGrid extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi ô trong Stats Grid
 class _StatTile extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -338,7 +319,6 @@ class _StatTile extends StatelessWidget {
   }
 }
 
-// 4. Continue Learning Card
 class ContinueLearningCard extends StatelessWidget {
   const ContinueLearningCard({super.key});
 
@@ -412,7 +392,6 @@ class ContinueLearningCard extends StatelessWidget {
   }
 }
 
-// 5. Feature Shortcuts
 class FeatureShortcuts extends StatelessWidget {
   const FeatureShortcuts({super.key,});
 
@@ -423,7 +402,6 @@ class FeatureShortcuts extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
-            // onNavigateToTab(1);
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const MagicVocabScreen()));
@@ -473,7 +451,7 @@ class FeatureShortcuts extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi shortcut
+
 class _ShortcutItem extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -502,7 +480,6 @@ class _ShortcutItem extends StatelessWidget {
   }
 }
 
-// 6. CEFR Progress Card
 class CefrProgressCard extends StatelessWidget {
   const CefrProgressCard({super.key});
 
@@ -522,7 +499,7 @@ class CefrProgressCard extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
-            _CefrLevelRow(level: "A1", progress: 1.0), // Đã hoàn thành
+            _CefrLevelRow(level: "A1", progress: 1.0),
             _CefrLevelRow(level: "A2", progress: 0.75),
             _CefrLevelRow(level: "B1", progress: 0.3),
             _CefrLevelRow(level: "B2", progress: 0.0),
@@ -535,7 +512,6 @@ class CefrProgressCard extends StatelessWidget {
   }
 }
 
-// Widget con cho mỗi hàng trong CEFR Progress
 class _CefrLevelRow extends StatelessWidget {
   final String level;
   final double progress;

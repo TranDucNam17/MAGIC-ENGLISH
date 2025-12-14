@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/progress_tracking_page.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (PROGRESS TRACKING PAGE) ---
 class ProgressTrackingPage extends StatefulWidget {
   const ProgressTrackingPage({super.key});
 
@@ -11,7 +8,6 @@ class ProgressTrackingPage extends StatefulWidget {
 }
 
 class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
-  // Biến trạng thái cho segmented control
   String _selectedPeriod = "Weekly";
 
   @override
@@ -22,7 +18,6 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -46,7 +41,6 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // --- CÁC THÀNH PHẦN GIAO DIỆN ---
                 const _LearningSummaryCard(),
                 const SizedBox(height: 12),
                 _buildPeriodControl(),
@@ -66,12 +60,11 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
     );
   }
 
-  // Widget cho segmented control
   Widget _buildPeriodControl() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(100), // Bo tròn như viên thuốc
+        borderRadius: BorderRadius.circular(100),
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Row(
@@ -91,7 +84,7 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFFE3F2FD) // Màu xanh nhạt khi được chọn
+                      ? const Color(0xFFE3F2FD)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(100),
                 ),
@@ -114,9 +107,6 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Thẻ tóm tắt học tập
 class _LearningSummaryCard extends StatelessWidget {
   const _LearningSummaryCard();
 
@@ -152,7 +142,6 @@ class _LearningSummaryCard extends StatelessWidget {
   }
 }
 
-// 3. Các thẻ chỉ số nhanh
 class _QuickStatsCards extends StatelessWidget {
   const _QuickStatsCards();
 
@@ -218,7 +207,6 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-// 4. Thẻ tiến độ CEFR
 class _CefrProgressCard extends StatelessWidget {
   const _CefrProgressCard();
 
@@ -243,12 +231,12 @@ class _CefrProgressCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _buildCefrRow("A1", 1.0, Colors.green), // 100%
-            _buildCefrRow("A2", 1.0, Colors.lightGreen), // 100%
-            _buildCefrRow("B1", 0.6, Colors.blue), // 60%
-            _buildCefrRow("B2", 0.1, Colors.lightBlue), // 10%
-            _buildCefrRow("C1", 0.0, Colors.purple), // 0%
-            _buildCefrRow("C2", 0.0, Colors.deepPurple), // 0%
+            _buildCefrRow("A1", 1.0, Colors.green),
+            _buildCefrRow("A2", 1.0, Colors.lightGreen),
+            _buildCefrRow("B1", 0.6, Colors.blue),
+            _buildCefrRow("B2", 0.1, Colors.lightBlue),
+            _buildCefrRow("C1", 0.0, Colors.purple),
+            _buildCefrRow("C2", 0.0, Colors.deepPurple),
           ],
         ),
       ),
@@ -282,7 +270,6 @@ class _CefrProgressCard extends StatelessWidget {
   }
 }
 
-// 5. Thẻ dòng thời gian hoạt động
 class _ActivityTimelineCard extends StatelessWidget {
   const _ActivityTimelineCard();
 
@@ -332,19 +319,18 @@ class _ActivityTimelineCard extends StatelessWidget {
   }
 }
 
-// 6. Thẻ gợi ý cho hôm nay
 class _RecommendedTodayCard extends StatelessWidget {
   const _RecommendedTodayCard();
 
   @override
   Widget build(BuildContext context) {
-    const Color accentTeal = Color(0xFF00695C); // Teal đậm hơn cho text
+    const Color accentTeal = Color(0xFF00695C);
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: const Color(0xFFE0F2F1), // Light Mint
+        color: const Color(0xFFE0F2F1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(

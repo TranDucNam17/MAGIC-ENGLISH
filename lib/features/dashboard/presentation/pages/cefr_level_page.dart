@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (CEFR LEVEL SCREEN) ---
 class CefrLevelScreen extends StatefulWidget {
   const CefrLevelScreen({super.key});
 
@@ -9,7 +8,6 @@ class CefrLevelScreen extends StatefulWidget {
 }
 
 class _CefrLevelScreenState extends State<CefrLevelScreen> {
-  // Giả sử tab "Home" vẫn được chọn
   final int _selectedIndex = 0;
 
   @override
@@ -20,7 +18,6 @@ class _CefrLevelScreenState extends State<CefrLevelScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -47,19 +44,15 @@ class _CefrLevelScreenState extends State<CefrLevelScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: const [
-                // 1) CEFR summary card
                 CefrSummaryCard(progress: 0.78),
                 SizedBox(height: 24),
 
-                // 2) Skills Overview grid
                 SkillsOverviewGrid(),
                 SizedBox(height: 24),
 
-                // 3) Requirements to reach B1
                 RequirementsSection(),
                 SizedBox(height: 24),
 
-                // 4) CEFR Roadmap card
                 CefrRoadmapCard(),
                 SizedBox(height: 16),
               ],
@@ -71,9 +64,6 @@ class _CefrLevelScreenState extends State<CefrLevelScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. CEFR Summary Card
 class CefrSummaryCard extends StatelessWidget {
   final double progress;
   const CefrSummaryCard({super.key, required this.progress});
@@ -124,7 +114,6 @@ class CefrSummaryCard extends StatelessWidget {
   }
 }
 
-// 2. Skills Overview Grid
 class SkillsOverviewGrid extends StatelessWidget {
   const SkillsOverviewGrid({super.key});
 
@@ -147,7 +136,7 @@ class SkillsOverviewGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
-          childAspectRatio: 2.2, // Điều chỉnh tỉ lệ để card không quá cao
+          childAspectRatio: 2.2,
           children: const [
             _SkillCard(skill: "Vocabulary", progress: 0.78),
             _SkillCard(skill: "Grammar", progress: 0.65),
@@ -205,7 +194,6 @@ class _SkillCard extends StatelessWidget {
   }
 }
 
-// 3. Requirements Section
 class RequirementsSection extends StatelessWidget {
   const RequirementsSection({super.key});
 
@@ -257,7 +245,6 @@ class _RequirementItem extends StatelessWidget {
   }
 }
 
-// 4. CEFR Roadmap Card
 class CefrRoadmapCard extends StatelessWidget {
   const CefrRoadmapCard({super.key});
 
@@ -352,7 +339,9 @@ class _RoadmapStep extends StatelessWidget {
                     : FontWeight.normal,
                 color: status == RoadmapStatus.future
                     ? Colors.grey
-                    : const Color(0xFF1A252F))),
+                    : const Color(0xFF1A252F)
+            )
+        ),
       ],
     );
   }

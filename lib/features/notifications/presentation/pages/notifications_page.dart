@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/notifications_page.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (NOTIFICATIONS PAGE) ---
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
@@ -14,7 +11,6 @@ class NotificationsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -31,7 +27,6 @@ class NotificationsPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        // 2. ListView chứa danh sách thông báo
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           children: const [
@@ -43,9 +38,8 @@ class NotificationsPage extends StatelessWidget {
               title: "Keep your 12-days streak!",
               message: "Don't forget to study 5 minutes today.",
               timestamp: "5 min ago",
-              isHighlight: true, // Đánh dấu là thông báo nổi bật
+              isHighlight: true,
             ),
-            // Các thông báo thường
             _NotificationCard(
               icon: Icons.emoji_events,
               iconColor: Colors.amber,
@@ -81,12 +75,9 @@ class NotificationsPage extends StatelessWidget {
           ],
         ),
       ),
-      // BottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // Tab "Home" được chọn
-        onTap: (index) {
-          /* TODO: Handle navigation */
-        },
+        currentIndex: 0,
+        onTap: (index) {},
         type: BottomNavigationBarType.fixed,
         selectedItemColor: primaryBlue,
         unselectedItemColor: Colors.grey[600],
@@ -109,7 +100,6 @@ class NotificationsPage extends StatelessWidget {
   }
 }
 
-// --- WIDGET TÁI SỬ DỤNG CHO THẺ THÔNG BÁO ---
 class _NotificationCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -147,7 +137,6 @@ class _NotificationCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Icon bên trái
             Container(
               width: 36,
               height: 36,
@@ -158,7 +147,6 @@ class _NotificationCard extends StatelessWidget {
               child: Icon(icon, color: iconColor, size: 20),
             ),
             const SizedBox(width: 12),
-            // Nội dung bên phải
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +168,6 @@ class _NotificationCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Dấu thời gian căn phải
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(

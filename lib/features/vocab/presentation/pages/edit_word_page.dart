@@ -1,10 +1,6 @@
-// lib/presentation/dashboard/edit_word_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (EDIT WORD SCREEN) ---
 class EditWordScreen extends StatefulWidget {
-  // Nhận dữ liệu của từ cần chỉnh sửa
   final Map<String, String> wordData;
 
   const EditWordScreen({super.key, required this.wordData});
@@ -14,7 +10,6 @@ class EditWordScreen extends StatefulWidget {
 }
 
 class _EditWordScreenState extends State<EditWordScreen> {
-  // Sử dụng các controller để điền sẵn dữ liệu vào TextFormField
   late final TextEditingController _wordController;
   late final TextEditingController _ipaController;
   late final TextEditingController _meaningController;
@@ -31,7 +26,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
   @override
   void initState() {
     super.initState();
-    // Khởi tạo các controller với dữ liệu được truyền vào
     final data = widget.wordData;
     _wordController = TextEditingController(text: data['word']);
     _ipaController = TextEditingController(text: data['ipa']);
@@ -43,8 +37,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
     _exampleController = TextEditingController(text: data['example']);
     _selectedCefrLevel = data['cefr'];
   }
-
-  // Đừng quên dispose các controller để tránh rò rỉ bộ nhớ
   @override
   void dispose() {
     _wordController.dispose();
@@ -57,7 +49,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
     _exampleController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
@@ -66,7 +57,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -95,7 +85,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // --- CÁC TRƯỜNG NHẬP LIỆU ĐƯỢC ĐIỀN SẴN ---
                   _FormTextField(label: "Word", controller: _wordController),
                   const SizedBox(height: 12),
                   const _AiEnrichButton(),
@@ -129,7 +118,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
                     hint: "Data structures and algorithms are...",
                   ),
                   const SizedBox(height: 24),
-                  // --- CÁC NÚT HÀNH ĐỘNG ---
                   Row(
                     children: [
                       Expanded(
@@ -154,10 +142,8 @@ class _EditWordScreenState extends State<EditWordScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: Xử lý logic lưu các thay đổi
                             if (_formKey.currentState?.validate() ?? false) {
-                              // Nếu form hợp lệ, thực hiện lưu dữ liệu
-                              Navigator.of(context).pop(); // Quay lại sau khi lưu
+                              Navigator.of(context).pop();
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -229,8 +215,6 @@ class _EditWordScreenState extends State<EditWordScreen> {
     );
   }
 }
-
-// --- CÁC WIDGET THÀNH PHẦN (TÁI SỬ DỤNG) ---
 
 class _FormTextField extends StatelessWidget {
   final String label;

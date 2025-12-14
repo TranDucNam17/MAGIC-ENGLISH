@@ -1,11 +1,6 @@
-// lib/presentation/dashboard/grammar_checker_screen.dart
-
-
 import 'package:flutter/material.dart';
-
 import 'grammar_check_detail_page.dart';
 
-// --- MÀN HÌNH CHÍNH (GRAMMAR CHECKER SCREEN) ---
 class GrammarCheckerScreen extends StatefulWidget {
   const GrammarCheckerScreen({super.key});
 
@@ -14,10 +9,7 @@ class GrammarCheckerScreen extends StatefulWidget {
 }
 
 class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
-  // Tab "Grammar" được chọn
   final int _selectedIndex = 2;
-
-  // Dữ liệu giả cho lịch sử kiểm tra
   final List<Map<String, String>> _historyItems = [
     {"errors": "5", "date": "12/1/2025", "status": "Done"},
     {"errors": "2", "date": "11/30/2025", "status": "Done"},
@@ -32,7 +24,6 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -41,7 +32,6 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
           icon: const Icon(Icons.arrow_back, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        // automaticallyImplyLeading: false,
         title: const Text(
           'Grammar Checker',
           style: TextStyle(
@@ -79,10 +69,8 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
     );
   }
 
-  // Hàm build cho danh sách lịch sử
   Widget _buildHistoryList() {
     return ListView.builder(
-      // shrinkWrap và physics được dùng khi ListView nằm trong SingleChildScrollView
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _historyItems.length,
@@ -98,9 +86,6 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Thẻ nhập liệu
 class _InputCard extends StatelessWidget {
   const _InputCard();
 
@@ -117,7 +102,6 @@ class _InputCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Ô nhập liệu
             const TextField(
               maxLines: 6,
               decoration: InputDecoration(
@@ -127,7 +111,6 @@ class _InputCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            // Các nút hành động
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -137,9 +120,7 @@ class _InputCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () {
-                    // TODO: Placeholder cho chức năng Run Check
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryBlue,
                     foregroundColor: Colors.white,
@@ -155,7 +136,6 @@ class _InputCard extends StatelessWidget {
   }
 }
 
-// 2. Thẻ kết quả AI
 class _AiResultCard extends StatelessWidget {
   const _AiResultCard();
 
@@ -196,7 +176,6 @@ class _AiResultCard extends StatelessWidget {
     );
   }
 
-  // Các hàm helper để build dòng cho đẹp
   Widget _buildResultLine(String label, String value, Color valueColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -232,7 +211,6 @@ class _AiResultCard extends StatelessWidget {
   }
 }
 
-// 3. Thanh tìm kiếm lịch sử
 class _SearchHistoryBar extends StatelessWidget {
   const _SearchHistoryBar();
 
@@ -240,7 +218,6 @@ class _SearchHistoryBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Search Field
         Expanded(
           child: TextField(
             decoration: InputDecoration(
@@ -257,7 +234,6 @@ class _SearchHistoryBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        // Nút Filter
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -274,7 +250,6 @@ class _SearchHistoryBar extends StatelessWidget {
   }
 }
 
-// 4. Thẻ lịch sử
 class _HistoryItemCard extends StatelessWidget {
   final String errors;
   final String date;
@@ -316,7 +291,6 @@ class _HistoryItemCard extends StatelessWidget {
             // Nút xem chi tiết
             ElevatedButton(
               onPressed: () {
-                // TODO: Điều hướng đến trang chi tiết lịch sử
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const GrammarCheckDetailScreen(),

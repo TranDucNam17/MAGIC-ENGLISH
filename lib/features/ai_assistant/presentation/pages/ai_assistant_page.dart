@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/ai_assistant_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (AI ASSISTANT SCREEN) ---
 class AiAssistantScreen extends StatelessWidget {
   const AiAssistantScreen({super.key});
 
@@ -39,11 +36,10 @@ class AiAssistantScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- CÁC THÀNH PHẦN GIAO DIỆN ---
               _GreetingBox(),
-              SizedBox(height: 24), // Tăng khoảng cách cho rõ ràng
+              SizedBox(height: 24),
               _FeatureShortcutsGrid(),
-              Spacer(), // Đẩy thanh chat xuống dưới cùng
+              Spacer(),
               _ChatInputBar(),
             ],
           ),
@@ -53,9 +49,6 @@ class AiAssistantScreen extends StatelessWidget {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Hộp chào mừng
 class _GreetingBox extends StatelessWidget {
   const _GreetingBox();
 
@@ -93,7 +86,6 @@ class _GreetingBox extends StatelessWidget {
   }
 }
 
-// 2. Lưới các phím tắt tính năng
 class _FeatureShortcutsGrid extends StatelessWidget {
   const _FeatureShortcutsGrid();
 
@@ -101,11 +93,11 @@ class _FeatureShortcutsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
-      shrinkWrap: true, // Quan trọng khi GridView ở trong Column
-      physics: const NeverScrollableScrollPhysics(), // Không cần cuộn
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 2.5, // Điều chỉnh tỉ lệ để nút không quá cao
+      childAspectRatio: 2.5,
       children: const [
         _FeatureButton(
           label: "Fix Grammar",
@@ -142,7 +134,6 @@ class _FeatureShortcutsGrid extends StatelessWidget {
   }
 }
 
-// Widget cho một nút tính năng
 class _FeatureButton extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -222,7 +213,7 @@ class _ChatInputBar extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: "Write your message...",
-                border: InputBorder.none, // Bỏ viền của TextField
+                border: InputBorder.none,
               ),
             ),
           ),

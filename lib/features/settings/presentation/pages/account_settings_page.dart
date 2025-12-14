@@ -1,37 +1,28 @@
-// lib/presentation/settings/account_settings_page.dart
-
 import 'package:flutter/material.dart';
 
 class AccountSettingsPage extends StatefulWidget {
   const AccountSettingsPage({super.key});
-
   @override
   State<AccountSettingsPage> createState() => _AccountSettingsPageState();
 }
 
 class _AccountSettingsPageState extends State<AccountSettingsPage> {
-  // Controllers để quản lý dữ liệu trong các trường text
   final _nameController = TextEditingController(text: "Username");
   final _emailController = TextEditingController(text: "username@email.com");
   final _phoneController = TextEditingController(text: "0123456789");
-
-  bool _isEditing = false; // Trạng thái để bật/tắt chế độ chỉnh sửa
+  bool _isEditing = false;
 
   @override
   void dispose() {
-    // Giải phóng controllers khi widget bị hủy
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
 
-  // Hàm xử lý sự kiện khi nhấn nút "Save Changes"
   void _onSaveChanges() {
-    // TODO: Thêm logic kiểm tra (validation) và gọi API để lưu thay đổi
-    print("Saving changes...");
     setState(() {
-      _isEditing = false; // Tắt chế độ chỉnh sửa sau khi lưu
+      _isEditing = false;
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -43,14 +34,12 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Định nghĩa các màu sắc và style để nhất quán với ProfilePage
     const Color primaryBlue = Color(0xFF4A90E2);
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -65,7 +54,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               color: darkText, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
-        // Nút Edit/Cancel ở góc phải
         actions: [
           TextButton(
             onPressed: () {
@@ -86,7 +74,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
       ),
       body: SafeArea(
         child: Center(
-          // Center và ConstrainedBox để tối ưu giao diện trên màn hình lớn
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
             child: SingleChildScrollView(
@@ -95,7 +82,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // --- CÁC TRƯỜNG THÔNG TIN ---
                   _buildTextField(
                     label: "Full Name",
                     controller: _nameController,
@@ -119,31 +105,19 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 32),
-
-                  // Nút thay đổi mật khẩu
                   _buildActionButton(
                     text: "Change Password",
-                    onTap: () {
-                      // TODO: Điều hướng đến trang thay đổi mật khẩu
-                      print("Navigating to Change Password page...");
-                    },
+                    onTap: () {},
                     icon: Icons.lock_outline,
                   ),
                   const SizedBox(height: 12),
-
-                  // Nút xóa tài khoản
                   _buildActionButton(
                     text: "Delete Account",
-                    onTap: () {
-                      // TODO: Hiển thị dialog xác nhận xóa tài khoản
-                      print("Showing delete account confirmation...");
-                    },
+                    onTap: () {},
                     icon: Icons.delete_outline,
-                    isDestructive: true, // Style màu đỏ cho hành động nguy hiểm
+                    isDestructive: true,
                   ),
                   const SizedBox(height: 32),
-
-                  // Nút "Save Changes" chỉ hiển thị khi đang ở chế độ chỉnh sửa
                   if (_isEditing)
                     ElevatedButton(
                       onPressed: _onSaveChanges,
@@ -174,9 +148,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     );
   }
 
-  // --- WIDGETS CON TÁI SỬ DỤNG ---
-
-  // Widget xây dựng một trường nhập liệu có thể chỉnh sửa
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
@@ -197,12 +168,11 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
         const SizedBox(height: 8),
         TextField(
           controller: controller,
-          enabled: isEditable, // Chỉ cho phép sửa khi isEditable = true
+          enabled: isEditable,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: Colors.grey),
             filled: true,
-            // Thay đổi màu nền dựa trên trạng thái chỉnh sửa
             fillColor: isEditable ? Colors.white : Colors.grey.shade100,
             contentPadding:
             const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -219,7 +189,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               borderSide:
               const BorderSide(color: Color(0xFF4A90E2), width: 1.5),
             ),
-            // Style khi bị vô hiệu hóa
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey.shade200),
@@ -230,7 +199,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     );
   }
 
-  // Widget xây dựng một nút hành động trong danh sách
   Widget _buildActionButton({
     required String text,
     required VoidCallback onTap,

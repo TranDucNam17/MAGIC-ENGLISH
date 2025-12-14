@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (WORD LEARNED SCREEN) ---
 class WordLearnedScreen extends StatefulWidget {
   const WordLearnedScreen({super.key});
 
@@ -9,7 +8,6 @@ class WordLearnedScreen extends StatefulWidget {
 }
 
 class _WordLearnedScreenState extends State<WordLearnedScreen> {
-  // Giả sử tab "Home" vẫn được chọn
   final int _selectedIndex = 0;
 
   @override
@@ -20,7 +18,6 @@ class _WordLearnedScreenState extends State<WordLearnedScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -52,27 +49,21 @@ class _WordLearnedScreenState extends State<WordLearnedScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: const [
-                // 1) Summary hero card
                 SummaryHeroCard(wordCount: 120),
                 SizedBox(height: 16),
 
-                // 2) Time range stats row
                 TimeRangeStatsRow(),
                 SizedBox(height: 24),
 
-                // 3) CEFR Progress (Words Learned)
                 CefrProgressSection(),
                 SizedBox(height: 24),
 
-                // 4) Part-of-speech distribution row
                 PartOfSpeechDistribution(),
                 SizedBox(height: 24),
 
-                // 5) Search and filter bar
                 SearchAndFilterBar(),
                 SizedBox(height: 16),
 
-                // 6) Learned word list
                 LearnedWordList(),
                 SizedBox(height: 16),
               ],
@@ -84,9 +75,6 @@ class _WordLearnedScreenState extends State<WordLearnedScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Summary Hero Card
 class SummaryHeroCard extends StatelessWidget {
   final int wordCount;
   const SummaryHeroCard({super.key, required this.wordCount});
@@ -129,7 +117,6 @@ class SummaryHeroCard extends StatelessWidget {
   }
 }
 
-// 2. Time Range Stats Row
 class TimeRangeStatsRow extends StatelessWidget {
   const TimeRangeStatsRow({super.key});
 
@@ -172,7 +159,6 @@ class _TimeStatCard extends StatelessWidget {
   }
 }
 
-// 3. CEFR Progress Section
 class CefrProgressSection extends StatelessWidget {
   const CefrProgressSection({super.key});
 
@@ -234,7 +220,6 @@ class _CefrProgressRow extends StatelessWidget {
   }
 }
 
-// 4. Part-of-Speech Distribution
 class PartOfSpeechDistribution extends StatelessWidget {
   const PartOfSpeechDistribution({super.key});
 
@@ -271,7 +256,6 @@ class _SpeechPartItem extends StatelessWidget {
   }
 }
 
-// 5. Search and Filter Bar
 class SearchAndFilterBar extends StatelessWidget {
   const SearchAndFilterBar({super.key});
 
@@ -316,13 +300,11 @@ class SearchAndFilterBar extends StatelessWidget {
   }
 }
 
-// 6. Learned Word List
 class LearnedWordList extends StatelessWidget {
   const LearnedWordList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Sử dụng Column cho ví dụ. Trong thực tế, nên dùng ListView.builder.
     return Column(
       children: const [
         _LearnedWordCard(

@@ -1,15 +1,10 @@
-// lib/presentation/premium/update_to_premium_page.dart
-
 import 'package:flutter/material.dart';
 
-/// Một màn hình giới thiệu và mời người dùng nâng cấp lên gói Premium.
-/// Hiển thị các lợi ích của gói cao cấp và một nút kêu gọi hành động rõ ràng.
 class UpdateToPremiumPage extends StatelessWidget {
   const UpdateToPremiumPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // --- Hệ thống màu sắc nhất quán ---
     const Color primaryBlue = Color(0xFF3B82F6);
     const Color lightBackground = Color(0xFFF3F5F9);
     const Color darkText = Color(0xFF1A252F);
@@ -18,7 +13,6 @@ class UpdateToPremiumPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.5,
@@ -36,25 +30,20 @@ class UpdateToPremiumPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      // 2. Body
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
             child: Column(
               children: [
-                // Phần nội dung có thể cuộn
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // --- Header ---
                         _buildHeader(),
                         const SizedBox(height: 24),
-
-                        // --- Danh sách lợi ích ---
                         _buildBenefitItem(
                           icon: Icons.auto_awesome,
                           iconColor: primaryBlue,
@@ -89,7 +78,6 @@ class UpdateToPremiumPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // --- Phần nút bấm ở dưới cùng ---
                 _buildBottomBar(context),
               ],
             ),
@@ -99,7 +87,6 @@ class UpdateToPremiumPage extends StatelessWidget {
     );
   }
 
-  // Widget cho phần Header
   Widget _buildHeader() {
     return const Column(
       children: [
@@ -132,7 +119,6 @@ class UpdateToPremiumPage extends StatelessWidget {
     );
   }
 
-  // Widget cho một mục lợi ích
   Widget _buildBenefitItem({
     required IconData icon,
     required Color iconColor,
@@ -182,7 +168,6 @@ class UpdateToPremiumPage extends StatelessWidget {
     );
   }
 
-  // Widget cho thanh thanh toán dưới cùng
   Widget _buildBottomBar(BuildContext context) {
     const Color primaryBlue = Color(0xFF3B82F6);
     return Container(

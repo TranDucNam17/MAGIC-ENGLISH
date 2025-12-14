@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (PART OF SPEECH SCREEN) ---
 class PartOfSpeechScreen extends StatefulWidget {
   const PartOfSpeechScreen({super.key});
 
@@ -9,7 +8,6 @@ class PartOfSpeechScreen extends StatefulWidget {
 }
 
 class _PartOfSpeechScreenState extends State<PartOfSpeechScreen> {
-  // Giả sử tab "Home" vẫn được chọn
   final int _selectedIndex = 0;
 
   @override
@@ -20,7 +18,6 @@ class _PartOfSpeechScreenState extends State<PartOfSpeechScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
@@ -47,15 +44,12 @@ class _PartOfSpeechScreenState extends State<PartOfSpeechScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: const [
-                // 1) Summary hero card
                 SummaryHeroCard(wordCount: 120, posCount: 8),
                 SizedBox(height: 24),
 
-                // 2) Part-of-speech progress card
                 PartOfSpeechProgressCard(),
                 SizedBox(height: 24),
 
-                // 3) Definition cards
                 DefinitionCardsList(),
                 SizedBox(height: 16),
               ],
@@ -67,9 +61,6 @@ class _PartOfSpeechScreenState extends State<PartOfSpeechScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN ---
-
-// 1. Summary Hero Card
 class SummaryHeroCard extends StatelessWidget {
   final int wordCount;
   final int posCount;
@@ -111,7 +102,6 @@ class SummaryHeroCard extends StatelessWidget {
   }
 }
 
-// 2. Part-of-Speech Progress Card
 class PartOfSpeechProgressCard extends StatelessWidget {
   const PartOfSpeechProgressCard({super.key});
 
@@ -182,7 +172,6 @@ class _PoSProgressRow extends StatelessWidget {
   }
 }
 
-// 3. Definition Cards List
 class DefinitionCardsList extends StatelessWidget {
   const DefinitionCardsList({super.key});
 
@@ -249,7 +238,7 @@ class DefinitionCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
-                height: 1.5, // Tăng khoảng cách dòng cho dễ đọc
+                height: 1.5,
               ),
             ),
             const SizedBox(height: 12),
@@ -257,7 +246,7 @@ class DefinitionCard extends StatelessWidget {
               text: TextSpan(
                 style: TextStyle(
                   fontSize: 14,
-                  fontFamily: 'Roboto', // Đảm bảo font nhất quán
+                  fontFamily: 'Roboto',
                   color: Colors.grey[700],
                 ),
                 children: [

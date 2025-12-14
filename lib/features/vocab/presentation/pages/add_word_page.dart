@@ -1,8 +1,5 @@
-// lib/presentation/dashboard/add_word_screen.dart
-
 import 'package:flutter/material.dart';
 
-// --- MÀN HÌNH CHÍNH (ADD WORD SCREEN) ---
 class AddWordScreen extends StatefulWidget {
   const AddWordScreen({super.key});
 
@@ -11,10 +8,7 @@ class AddWordScreen extends StatefulWidget {
 }
 
 class _AddWordScreenState extends State<AddWordScreen> {
-  // Biến để lưu giá trị được chọn trong Dropdown
   String? _selectedCefrLevel;
-
-  // GlobalKey cho Form để sau này có thể validate
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -26,17 +20,14 @@ class _AddWordScreenState extends State<AddWordScreen> {
 
     return Scaffold(
       backgroundColor: lightBackground,
-      // 1. AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 2.0,
         shadowColor: Colors.grey.withOpacity(0.2),
-        // Nút 'X' để đóng
         leading: IconButton(
           icon: const Icon(Icons.close, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        // Tiêu đề căn trái
         title: const Text(
           'Add Word',
           style: TextStyle(
@@ -45,7 +36,7 @@ class _AddWordScreenState extends State<AddWordScreen> {
             fontSize: 20,
           ),
         ),
-        titleSpacing: 0, // Bỏ khoảng trống mặc định bên trái tiêu đề
+        titleSpacing: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -57,7 +48,6 @@ class _AddWordScreenState extends State<AddWordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // --- CÁC TRƯỜNG NHẬP LIỆU ---
                   const _FormTextField(label: "Word"),
                   const SizedBox(height: 12),
                   const _AiEnrichButton(),
@@ -71,7 +61,7 @@ class _AddWordScreenState extends State<AddWordScreen> {
                   const SizedBox(height: 16),
                   const _FormTextField(label: "Part of speech"),
                   const SizedBox(height: 16),
-                  _buildCefrDropdown(), // Dropdown cho CEFR Level
+                  _buildCefrDropdown(),
                   const SizedBox(height: 16),
                   const _FormTextField(label: "Topic"),
                   const SizedBox(height: 16),
@@ -88,11 +78,8 @@ class _AddWordScreenState extends State<AddWordScreen> {
                     hint: "Data structures and algorithms are...",
                   ),
                   const SizedBox(height: 24),
-
-                  // --- CÁC NÚT HÀNH ĐỘNG ---
                   Row(
                     children: [
-                      // Nút Cancel
                       Expanded(
                         child: OutlinedButton(
                           onPressed: () => Navigator.of(context).pop(),
@@ -112,12 +99,9 @@ class _AddWordScreenState extends State<AddWordScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      // Nút Save Word
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: Xử lý logic lưu từ
-                          },
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: primaryBlue,
                             foregroundColor: Colors.white,
@@ -145,7 +129,6 @@ class _AddWordScreenState extends State<AddWordScreen> {
     );
   }
 
-  // Widget riêng cho Dropdown CEFR
   Widget _buildCefrDropdown() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,9 +172,6 @@ class _AddWordScreenState extends State<AddWordScreen> {
   }
 }
 
-// --- CÁC WIDGET THÀNH PHẦN CHO FORM ---
-
-// Widget chung cho các trường TextFormField
 class _FormTextField extends StatelessWidget {
   final String label;
   final String? hint;
@@ -240,7 +220,6 @@ class _FormTextField extends StatelessWidget {
   }
 }
 
-// Widget cho nút AI Enrich
 class _AiEnrichButton extends StatelessWidget {
   const _AiEnrichButton();
 
@@ -248,9 +227,7 @@ class _AiEnrichButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color accentGreen = Color(0xFF66DDAA);
     return ElevatedButton(
-      onPressed: () {
-        // TODO: Placeholder cho chức năng AI
-      },
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
         backgroundColor: accentGreen,
         foregroundColor: const Color(0xFF003D23),

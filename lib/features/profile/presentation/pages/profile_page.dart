@@ -1,37 +1,27 @@
-// lib/presentation/dashboard/profile_page.dart
-
 import 'package:btl_magicenglish/features/common/presentation/pages/update_to_premium_page.dart';
 import 'package:btl_magicenglish/features/settings/presentation/pages/account_settings_page.dart';
 import 'package:btl_magicenglish/features/settings/presentation/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
-// SỬA: Biến ProfilePage thành một StatelessWidget không chứa Scaffold
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  // Placeholder function for navigation
   void _navigateTo(BuildContext context, String page) {
-    // TODO: Implement navigation logic
     print("Navigating to $page");
   }
 
   @override
   Widget build(BuildContext context) {
-    // Định nghĩa các màu sắc và style để dễ quản lý
     const Color primaryBlue = Color(0xFF4A90E2);
     const Color darkText = Color(0xFF1A252F);
 
-    // SỬA: Bỏ Scaffold, trả về trực tiếp nội dung chính của trang
     return SafeArea(
       child: Center(
-        // Center và ConstrainedBox để tối ưu giao diện trên màn hình lớn
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
             child: Column(
               children: [
-                // --- CÁC PHẦN CỦA GIAO DIỆN (Nội dung bên trong không đổi) ---
                 _buildAvatarSection(context),
                 const SizedBox(height: 20),
                 _buildStatsGrid(context),
@@ -47,9 +37,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  // --- CÁC WIDGET CON CHO TỪNG PHẦN (Giữ nguyên không thay đổi) ---
-
-  // Section 1: Avatar và thông tin cơ bản
   Widget _buildAvatarSection(BuildContext context) {
     const Color primaryBlue = Color(0xFF4A90E2);
     return Column(
@@ -112,7 +99,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  // Section 2: Lưới thống kê
   Widget _buildStatsGrid(BuildContext context) {
     return Column(
       children: [
@@ -135,7 +121,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  // Section 3: Danh sách menu
   Widget _buildMenuList(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -172,7 +157,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  // Section 4: Nút Update to Premium
   Widget _buildPremiumButton(BuildContext context) {
     const Color primaryBlue = Color(0xFF4A90E2);
     return ElevatedButton(
@@ -194,8 +178,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-// --- WIDGETS CON TÁI SỬ DỤNG (Giữ nguyên) ---
 
 class _StatCard extends StatelessWidget {
   final String label;

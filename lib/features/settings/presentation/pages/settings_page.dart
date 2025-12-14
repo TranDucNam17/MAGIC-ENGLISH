@@ -1,9 +1,5 @@
-// lib/presentation/settings/settings_page.dart
-
 import 'package:flutter/material.dart';
 
-/// Màn hình Cài đặt chính của ứng dụng.
-/// Cho phép người dùng tùy chỉnh các thiết lập chung, thông báo, và xem thông tin về ứng dụng.
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -12,20 +8,14 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  // Biến trạng thái giả lập cho các switch
   bool _dailyReminders = true;
   bool _weeklyProgress = true;
   bool _darkMode = false;
 
-  // Placeholder function for navigation
-  void _onItemTapped(BuildContext context, String title) {
-    print("$title tapped");
-    // TODO: Implement navigation logic, e.g., Navigator.push(...)
-  }
+  void _onItemTapped(BuildContext context, String title) {}
 
   @override
   Widget build(BuildContext context) {
-    // --- Hệ thống màu sắc nhất quán ---
     const Color primaryBlue = Color(0xFF3B82F6);
     const Color lightBackground = Color(0xFFF3F5F9);
     const Color darkText = Color(0xFF1A252F);
@@ -60,7 +50,6 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // --- Section: General ---
                   _SettingsGroup(
                     title: 'General',
                     children: [
@@ -81,7 +70,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           setState(() {
                             _darkMode = value;
                           });
-                          // TODO: Implement logic to change app theme
                         },
                         activeColor: primaryBlue,
                       ),
@@ -127,8 +115,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                   const SizedBox(height: 20),
-
-                  // --- Section: Support & About ---
                   _SettingsGroup(
                     title: 'Support & About',
                     children: [
@@ -150,8 +136,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       _SettingsItem(
                         icon: Icons.info_outline,
                         title: 'About Magic English',
-                        value: 'v1.0.0', // Giả lập phiên bản ứng dụng
-                        onTap: () {}, // Có thể không cần làm gì
+                        value: 'v1.0.0',
+                        onTap: () {},
                       ),
                     ],
                   ),
@@ -165,9 +151,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-// --- Reusable UI Components ---
-
-/// Một thẻ bo tròn để nhóm các cài đặt
 class _SettingsGroup extends StatelessWidget {
   final String title;
   final List<Widget> children;
@@ -196,7 +179,6 @@ class _SettingsGroup extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
           ),
-          // Sử dụng ClipRRect để đảm bảo hiệu ứng InkWell cũng được bo tròn
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Column(children: children),
@@ -207,7 +189,6 @@ class _SettingsGroup extends StatelessWidget {
   }
 }
 
-/// Một mục cài đặt có thể nhấn vào (dạng ListTile tùy chỉnh)
 class _SettingsItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -252,7 +233,6 @@ class _SettingsItem extends StatelessWidget {
                   style: const TextStyle(fontSize: 16, color: greyText),
                 ),
               const SizedBox(width: 8),
-              // Hiển thị chevron chỉ khi không có giá trị (vì nó ngụ ý điều hướng)
               if (value == null)
                 const Icon(Icons.chevron_right, color: Colors.grey, size: 22),
             ],
