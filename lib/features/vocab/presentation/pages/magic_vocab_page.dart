@@ -1,3 +1,4 @@
+import 'package:btl_magicenglish/features/dashboard/presentation/pages/home_dashboard_page.dart';
 import 'package:btl_magicenglish/features/vocab/presentation/pages/view_word_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'add_word_page.dart';
@@ -46,7 +47,10 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
         shadowColor: Colors.grey.withOpacity(0.2),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: darkText),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pushReplacement(
+              context, 
+              MaterialPageRoute(builder: (context) => const HomeDashboardScreen())
+          ),
         ),
         title: const Text(
           'Magic Vocab',
