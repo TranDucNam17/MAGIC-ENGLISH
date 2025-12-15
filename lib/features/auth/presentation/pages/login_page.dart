@@ -1,9 +1,7 @@
 import 'package:btl_magicenglish/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:btl_magicenglish/features/auth/presentation/pages/register_page.dart';
 import 'package:btl_magicenglish/features/dashboard/presentation/pages/home_dashboard_page.dart';
-
 import 'package:flutter/material.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,32 +11,42 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   bool _isPasswordVisible = false;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose(){
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Định nghĩa các màu sắc và style để sử dụng nhất quán
-    const Color primaryBlue = Color(0xFF0D47A1); // Màu xanh dương chính
+    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
     const Color greyBorder = Color(0xFFE0E0E0);
     const Color greyIcon = Color(0xFF9E9E9E);
 
     return Scaffold(
-      // 1. Layout: Nền xanh rất nhạt
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
-        // 2. Layout: Cho phép cuộn khi bàn phím hiện lên
         child: SingleChildScrollView(
           child: Padding(
-            // 3. Layout: Padding ngang 24px
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
+            child: Form(
+
+              key: _formKey,
+
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 60), // Khoảng trống ở trên cùng
-
-                // 4. Header: Tên ứng dụng
+                const SizedBox(height: 60),
                 RichText(
                   textAlign: TextAlign.center,
                   text: const TextSpan(
@@ -59,10 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // 5. Header: Tiêu đề màn hình "Log In"
                 const Text(
                   'Log In',
                   textAlign: TextAlign.center,
@@ -72,12 +77,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 48),
 
-                const SizedBox(height: 48), // Khoảng trống lớn trước form
-
-                // 6. Form: Trường nhập Email
+                //TODO: validator cho email
                 TextFormField(
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
+
                   decoration: InputDecoration(
                     labelText: 'Email',
                     filled: true,
@@ -92,13 +98,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderSide: const BorderSide(color: greyBorder),
                     ),
                   ),
+
+                  //TODO: auto validate khi nguoi dung tuong tac
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value){
+                    if(value == null || value.trim().isEmpty){
+                      return 'Please enter your email.';
+                    }
+                    final emailRegex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                    if(!emailRegex.hasMatch(value)){
+                      return 'Please enter a valid email address.';
+                    }
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 16),
-
-                // 7. Form: Trường nhập Password
+                //TODO: validator cho password
                 TextFormField(
-                  obscureText: !_isPasswordVisible, // Ẩn/hiện mật khẩu
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     filled: true,
@@ -124,17 +142,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderSide: const BorderSide(color: greyBorder),
                     ),
                   ),
+
+                  //TODO: auto validate khi nguoi dung tuong tac
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value){
+                    if(value == null || value.isEmpty){
+                      return 'Please enter your password';
+                    }
+                    if(value.length < 6){
+                      return 'Password must be at least 6 characters long.';
+                    }
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 20),
-
-                // 8. Links Row: Hàng chứa link "Register" và "Forgot password?"
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
                       onPressed: () {
-                        // TODO: Điều hướng đến màn hình đăng ký
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                       },
                       child: const Text(
@@ -144,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // TODO: Điều hướng đến màn hình quên mật khẩu
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
                       },
                       child: const Text(
@@ -154,12 +180,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 40), // Khoảng trống lớn trước nút chính
-
-                // 9. Primary Button: Nút "Login"
+                const SizedBox(height: 40),
                 Container(
-                  height: 56, // Chiều cao nút
+                  height: 56,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
@@ -170,17 +193,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         offset: const Offset(0, 5),
                       ),
                     ],
-                    // Tùy chọn: Sử dụng gradient để làm đẹp hơn
                     gradient: const LinearGradient(
-                      colors: [primaryBlue, Color(0xFF1976D2)], // Xanh đậm đến xanh sáng hơn
+                      colors: [primaryBlue, Color(0xFF1976D2)],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
                   ),
                   child: MaterialButton(
+                    //TODO: validate khi nhan nut
                     onPressed: () {
-                      // TODO: Xử lý logic đăng nhập
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeDashboardScreen()));
+                      if(_formKey.currentState!.validate()){
+                        String email = _emailController.text;
+                        String password = _passwordController.text;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Logging in with $email...')),
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const HomeDashboardScreen()));
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please correct the errors in the form.'),
+                            backgroundColor: Colors.red),
+                        );
+                      }
                     },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -201,6 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+      )
     );
   }
 }
