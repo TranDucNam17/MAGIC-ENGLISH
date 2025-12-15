@@ -1,5 +1,3 @@
-// lib/presentation/auth/register_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:btl_magicenglish/features/auth/presentation/pages/register_success_page.dart';
 
@@ -11,44 +9,57 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // Controllers để quản lý dữ liệu trong các trường text
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  // Biến trạng thái để ẩn/hiện mật khẩu
   bool _isPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
 
   @override
   void dispose() {
-    // Giải phóng controllers khi widget bị hủy để tránh rò rỉ bộ nhớ
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  // Hàm xử lý sự kiện khi nhấn nút "Register"
   void _onRegisterPressed() {
-    // TODO: Thêm logic kiểm tra (validation) và gọi API đăng ký ở đây
+    // TODO: Thêm logic kiểm tra (validation) và gọi API đăng ký
     final email = _emailController.text;
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
     Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterSuccessPage()));
   }
 
+  //TODO: validate khi nhan nut
+  void _handleRegister(){
+    if(_formKey.currentState!.validate()){
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Register with $email...')),
+      );
+      print('Registration successful for Email: $email');
+      Navigator.pop(context);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please correct the errors in the form.'),
+        backgroundColor: Colors.red,),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF4A90E2); // Màu xanh dương chính
-    const Color lightBlueBackground = Color(0xFFF3F6FF); // Màu nền
+    const Color primaryBlue = Color(0xFF4A90E2);
+    const Color lightBlueBackground = Color(0xFFF3F6FF);
     const Color darkText = Color(0xFF1A252F);
-    const Color greyText = Color(0xFF5A6B7B);
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
       appBar: AppBar(
-        // AppBar trong suốt để nút back vẫn hoạt động trên nền
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
@@ -57,76 +68,159 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
       body: SafeArea(
-        child: Center(
-          // Center để căn giữa nội dung
-          child: ConstrainedBox(
-            // Giới hạn chiều rộng tối đa để trông đẹp trên web/tablet
-            constraints: const BoxConstraints(maxWidth: 480),
-            child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20),
-                  // Phần Logo
-                  _buildBrandLogo(),
-                  const SizedBox(height: 12),
-                  // Tiêu đề
                   const Text(
-                    "Register",
+                    'Create Account',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: primaryBlue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 32),
-
-                  // Form Fields
-                  // 1. Email
-                  _buildTextField(
-                    label: "Email",
+                  const SizedBox(height: 12),
+                  const Text(
+                    "Fill in the details below to start your journey",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  TextFormField(
                     controller: _emailController,
-                    hintText: "abcabc@gmail.com",
-                    prefixIcon: Icons.mail_outline,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey,),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                    ),
                     keyboardType: TextInputType.emailAddress,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value){
+                      if(value == null || value.trim().isEmpty){
+                        return 'Please enter an email';
+                      }
+                      final emailRegex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if(!emailRegex.hasMatch(value)){
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16),
-
-                  // 2. Mật khẩu
-                  _buildTextField(
-                    label: "Password",
+                  TextFormField(
                     controller: _passwordController,
-                    prefixIcon: Icons.lock_outline,
-                    isObscured: _isPasswordObscured,
-                    onToggleVisibility: () {
-                      setState(() {
-                        _isPasswordObscured = !_isPasswordObscured;
-                      });
+                    obscureText: !_isPasswordObscured,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey,),
+                      suffixIcon: IconButton(
+                        icon: Icon(_isPasswordObscured ? Icons.visibility_off_outlined : Icons.visibility_off_outlined, color: Colors.grey,),
+                        onPressed: () => setState(() => _isPasswordObscured = !_isPasswordObscured),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value){
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a password";
+                      }
+                      if (value.length < 6) {
+                        return "Password must be at least 6 characters long.";
+                      }
+                      if (!value.contains(RegExp(r'[A-Z]'))) {
+                        return "Passwords must contain uppercase letters.";
+                      }
+                      if (!value.contains(RegExp(r'[0-9]'))) {
+                        return "The password must contain numbers.";
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 16),
-
-                  // 3. Xác nhận mật khẩu
-                  _buildTextField(
-                    label: "Confirm password",
+                  TextFormField(
                     controller: _confirmPasswordController,
-                    prefixIcon: Icons.lock_outline,
-                    isObscured: _isConfirmPasswordObscured,
-                    onToggleVisibility: () {
-                      setState(() {
-                        _isConfirmPasswordObscured =
-                        !_isConfirmPasswordObscured;
-                      });
+                    obscureText: !_isConfirmPasswordObscured,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                      suffixIcon: IconButton(
+                        icon: Icon(_isConfirmPasswordObscured ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: Colors.grey),
+                        onPressed: () => setState(() => !_isConfirmPasswordObscured),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value){
+                      if(value == null || value.isEmpty){
+                        return 'Please confim your password.';
+                      }
+                      if(value != _passwordController.text){
+                        return 'Password do not match.';
+                      }
+                      return null;
                     },
                   ),
-                  const SizedBox(height: 32),
-
-                  // Nút Đăng ký
-                  _buildRegisterButton(),
-                  const SizedBox(height: 40), // Khoảng trống ở dưới cùng
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: _handleRegister,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryBlue,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Already have an account?'),
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text(
+                            'Log In',
+                            style: TextStyle(color: primaryBlue, fontWeight: FontWeight.bold),
+                          ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
@@ -136,15 +230,12 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // --- WIDGETS CON ---
-
-  // Widget xây dựng Logo
   Widget _buildBrandLogo() {
     return RichText(
       textAlign: TextAlign.center,
       text: const TextSpan(
         style: TextStyle(
-          fontFamily: 'Roboto', // hoặc 'Inter'
+          fontFamily: 'Roboto',
           fontSize: 22,
           fontWeight: FontWeight.bold,
         ),
@@ -162,7 +253,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // Widget xây dựng một trường nhập liệu (tái sử dụng)
   Widget _buildTextField({
     required String label,
     required TextEditingController controller,
@@ -222,16 +312,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  // Widget xây dựng nút đăng ký
   Widget _buildRegisterButton() {
     return ElevatedButton(
       onPressed: _onRegisterPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4A90E2), // Màu nền chính
-        foregroundColor: Colors.white, // Màu chữ
-        minimumSize: const Size(double.infinity, 52), // Chiều cao
-        shape: const StadiumBorder(), // Bo tròn dạng viên thuốc
-        elevation: 4, // Đổ bóng
+        backgroundColor: const Color(0xFF4A90E2),
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 52),
+        shape: const StadiumBorder(),
+        elevation: 4,
         shadowColor: const Color(0xFF4A90E2).withOpacity(0.4),
       ),
       child: const Text(
