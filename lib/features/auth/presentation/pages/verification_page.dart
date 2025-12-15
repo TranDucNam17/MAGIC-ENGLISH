@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; //
-import 'package:btl_magicenglish/features/auth/presentation/pages/new_password_page.dart';// Để sử dụng InputFormatter
+import 'package:flutter/services.dart';
+import 'package:btl_magicenglish/features/auth/presentation/pages/new_password_page.dart';
 
 class VerificationScreen extends StatelessWidget {
   const VerificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Định nghĩa các màu sắc và style để đảm bảo tính nhất quán
     const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
@@ -15,10 +14,8 @@ class VerificationScreen extends StatelessWidget {
     const Color greyBorder = Color(0xFFE0E0E0);
 
     return Scaffold(
-      // 1. General: Nền xanh rất nhạt
       backgroundColor: lightBlueBackground,
       appBar: AppBar(
-        // AppBar để cung cấp nút quay lại tự động
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
@@ -27,18 +24,13 @@ class VerificationScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        // 2. General: Cho phép cuộn khi bàn phím hiện lên
         child: SingleChildScrollView(
           child: Padding(
-            // 3. General: Padding ngang 24dp
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
-              // Căn lề trái cho các phần tử bên trong Column
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 30),
-
-                // 4. Header: Tên ứng dụng
                 RichText(
                   textAlign: TextAlign.center,
                   text: const TextSpan(
@@ -60,8 +52,6 @@ class VerificationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 48),
-
-                // 5. Title: Tiêu đề màn hình
                 const Text(
                   'Enter verification code',
                   textAlign: TextAlign.center,
@@ -72,8 +62,6 @@ class VerificationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-
-                // 6. Description: Văn bản mô tả
                 const Text(
                   'We just sent a 6-digit code to your email. Please check it.',
                   textAlign: TextAlign.center,
@@ -83,31 +71,27 @@ class VerificationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                // 7. Verification Code Field: Nhãn căn lề trái
                 const Text(
                   'Verification code',
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600, // Medium-bold
+                    fontWeight: FontWeight.w600,
                     color: mediumGrey,
                   ),
                 ),
                 const SizedBox(height: 8),
-
-                // 8. Verification Code Field: Trường nhập liệu
                 TextFormField(
                   keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center, // Căn giữa chữ trong ô input
+                  textAlign: TextAlign.center,
                   maxLength: 6,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 8, // Tạo khoảng cách giữa các số
+                    letterSpacing: 8,
                   ),
                   decoration: InputDecoration(
-                    counterText: "", // Ẩn bộ đếm ký tự
+                    counterText: "",
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -125,12 +109,10 @@ class VerificationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                // 9. Primary Button: Nút "Verify"
                 Container(
                   height: 56,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100), // Hình dạng viên thuốc
+                    borderRadius: BorderRadius.circular(100),
                     boxShadow: [
                       BoxShadow(
                         color: primaryBlue.withOpacity(0.3),
