@@ -1,3 +1,5 @@
+import 'package:btl_magicenglish/features/streak/presentation/pages/daily_streak_page.dart';
+
 import 'cefr_level_page.dart';
 import 'part_of_speech_page.dart';
 import 'word_learned_page.dart';
@@ -189,10 +191,17 @@ class DailyStreakCard extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               const Spacer(),
-              const Text(
-                "View details",
-                style: TextStyle(color: Color(0xFF0D47A1), fontSize: 12),
-              ),
+              GestureDetector(
+                onTap: (){
+                  print("Navigating to Daily Streak Details...");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyStreakScreen()),
+                  );
+                },
+                child: const Text(
+                  "View details",
+                  style: TextStyle(color: Color(0xFF0D47A1), fontSize: 12),
+                ),
+              )
             ],
           ),
           const SizedBox(height: 8),
