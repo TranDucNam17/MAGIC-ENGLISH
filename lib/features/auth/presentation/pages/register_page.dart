@@ -38,11 +38,12 @@ class _RegisterPageState extends State<RegisterPage> {
     if(_formKey.currentState!.validate()){
       final email = _emailController.text;
       final password = _passwordController.text;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Register with $email...')),
+      print('Validation successful for Email: $email and Password: $password');
+      print('Navigating to RegisterSuccessPage...');
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const RegisterSuccessPage()),
       );
-      print('Registration successful for Email: $email');
-      Navigator.pop(context);
     }else{
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please correct the errors in the form.'),
