@@ -183,7 +183,7 @@ class _EditWordScreenState extends State<EditWordScreen> {
         ),
         const SizedBox(height: 4),
         DropdownButtonFormField<String>(
-          value: _selectedCefrLevel,
+          initialValue: _selectedCefrLevel,
           onChanged: (String? newValue) {
             setState(() {
               _selectedCefrLevel = newValue;
