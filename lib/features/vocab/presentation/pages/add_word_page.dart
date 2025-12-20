@@ -16,7 +16,6 @@ class _AddWordScreenState extends State<AddWordScreen> {
     const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
-    const Color accentGreen = Color(0xFF66DDAA);
 
     return Scaffold(
       backgroundColor: lightBackground,
@@ -139,7 +138,7 @@ class _AddWordScreenState extends State<AddWordScreen> {
         ),
         const SizedBox(height: 4),
         DropdownButtonFormField<String>(
-          value: _selectedCefrLevel,
+          initialValue: _selectedCefrLevel,
           onChanged: (String? newValue) {
             setState(() {
               _selectedCefrLevel = newValue;
