@@ -12,7 +12,6 @@ class _ProgressTrackingPageState extends State<ProgressTrackingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
 
