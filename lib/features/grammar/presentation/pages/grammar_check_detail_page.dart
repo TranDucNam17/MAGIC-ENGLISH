@@ -7,7 +7,6 @@ class GrammarCheckDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
-    const Color primaryBlue = Color(0xFF0D47A1);
 
     return Scaffold(
       backgroundColor: lightBackground,
