@@ -8,7 +8,6 @@ class UpdateToPremiumPage extends StatelessWidget {
     const Color primaryBlue = Color(0xFF3B82F6);
     const Color lightBackground = Color(0xFFF3F5F9);
     const Color darkText = Color(0xFF1A252F);
-    const Color greyText = Color(0xFF5A6B7B);
     const Color goldColor = Color(0xFFFFD700);
 
     return Scaffold(
