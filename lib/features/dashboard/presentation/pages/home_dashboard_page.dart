@@ -1,5 +1,4 @@
 import 'package:btl_magicenglish/features/streak/presentation/pages/daily_streak_page.dart';
-
 import 'cefr_level_page.dart';
 import 'part_of_speech_page.dart';
 import 'word_learned_page.dart';
@@ -70,7 +69,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
 class _HomeScreenContent extends StatelessWidget {
 
-  const _HomeScreenContent({super.key,});
+  const _HomeScreenContent();
 
   @override
   Widget build(BuildContext context) {
