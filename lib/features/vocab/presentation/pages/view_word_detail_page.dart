@@ -10,10 +10,8 @@ class ViewWordDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
-    const Color accentGreen = Color(0xFF66DDAA);
 
     return Scaffold(
       backgroundColor: lightBackground,
@@ -73,8 +71,8 @@ class ViewWordDetailScreen extends StatelessWidget {
                         child: OutlinedButton(
                           onPressed: () => Navigator.of(context).pop(),
                           style: OutlinedButton.styleFrom(
-                            foregroundColor: primaryBlue,
-                            side: const BorderSide(color: primaryBlue, width: 1.5),
+                            foregroundColor: Colors.blueAccent,
+                            side: const BorderSide(color: Colors.blueAccent, width: 1.5),
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -91,7 +89,7 @@ class ViewWordDetailScreen extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: null, // Vô hiệu hóa nút
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryBlue,
+                            backgroundColor: Colors.blueAccent,
                             disabledBackgroundColor: Colors.grey.shade300,
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
@@ -131,7 +129,7 @@ class ViewWordDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           DropdownButtonFormField<String>(
-            value: value,
+            initialValue: value,
             onChanged: null,
             items: <String>['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
                 .map<DropdownMenuItem<String>>((String val) {
