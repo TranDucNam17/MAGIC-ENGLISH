@@ -13,7 +13,6 @@ class MagicVocabScreen extends StatefulWidget {
 }
 
 class _MagicVocabScreenState extends State<MagicVocabScreen> {
-  final int _selectedIndex = 1;
 
   final List<Map<String, String>> vocabList = [
     {
@@ -35,7 +34,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
 
