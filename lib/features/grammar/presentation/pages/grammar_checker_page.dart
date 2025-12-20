@@ -9,7 +9,6 @@ class GrammarCheckerScreen extends StatefulWidget {
 }
 
 class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
-  final int _selectedIndex = 2;
   final List<Map<String, String>> _historyItems = [
     {"errors": "5", "date": "12/1/2025", "status": "Done"},
     {"errors": "2", "date": "11/30/2025", "status": "Done"},
@@ -18,7 +17,6 @@ class _GrammarCheckerScreenState extends State<GrammarCheckerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
 
