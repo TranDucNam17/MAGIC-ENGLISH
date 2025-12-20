@@ -11,8 +11,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF4A90E2);
-    const Color darkText = Color(0xFF1A252F);
 
     return SafeArea(
       child: Center(
