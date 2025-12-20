@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:btl_magicenglish/features/auth/presentation/pages/register_success_page.dart';
 
@@ -18,38 +19,96 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isConfirmPasswordObscured = true;
 
   @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_revalidateConfirmPassword);
+  }
+
+  void _revalidateConfirmPassword() {
+    if(_confirmPasswordController.text.isNotEmpty) {
+      _formKey.currentState?.validate();
+    }
+  }
+
+  @override
   void dispose() {
+    _passwordController.removeListener((_revalidateConfirmPassword));
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _onRegisterPressed() {
-    // TODO: Thêm logic kiểm tra (validation) và gọi API đăng ký
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterSuccessPage()));
-  }
-
-  //TODO: validate khi nhan nut
-  void _handleRegister(){
-    if(_formKey.currentState!.validate()){
-      final email = _emailController.text;
-      final password = _passwordController.text;
-      print('Validation successful for Email: $email and Password: $password');
-      print('Navigating to RegisterSuccessPage...');
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RegisterSuccessPage()),
-      );
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please correct the errors in the form.'),
-        backgroundColor: Colors.red,),
-      );
+  Future<void> _handleRegister() async{
+    if(!_formKey.currentState!.validate()) {
+      return;
     }
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        )
+    );
+      final email = _emailController.text.trim();
+      final password = _passwordController.text;
+
+      try{
+        // call API, add new user
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email,
+            password: password
+        );
+        print('Firebase Auth: User created successfully! UID: ${userCredential.user?.uid}');
+
+        final user = FirebaseAuth.instance.currentUser;
+        if(user != null) {
+          final idToken = await user.getIdToken(true);
+          print('USER: ${user.email} - UID:: ${user.uid}');
+          print('ID TOKEN: $idToken');
+        }else {
+          print('User not found despite successful login.');
+        }
+    
+        if(mounted) Navigator.of(context).pop();
+        if(mounted) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const RegisterSuccessPage())
+          );
+        }
+      }on FirebaseAuthException catch(e){
+        if(mounted) Navigator.of(context).pop();
+        print('Firebase Auth Error: ${e.code}');
+        String errorMessage = 'An error occurred. Please try again.';
+        if(e.code == 'weak-password'){
+          errorMessage = 'The password provided is too weak.';
+        }else if(e.code == 'email-already-in-use'){
+          errorMessage = 'An account already exists for that email.';
+        }else if(e.code == 'invalid-email'){
+          errorMessage = 'The email address is not valid.';
+        }
+        
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }catch(e){
+        if(mounted) Navigator.of(context).pop();
+        print('An unexpected error occurred: $e');
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('An unexpected error occurred. Please check your network connection.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
   }
 
   @override
@@ -132,7 +191,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       fillColor: Colors.white,
                       prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey,),
                       suffixIcon: IconButton(
-                        icon: Icon(_isPasswordObscured ? Icons.visibility_off_outlined : Icons.visibility_off_outlined, color: Colors.grey,),
+                        icon: Icon(
+                          _isPasswordObscured
+                            ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: Colors.grey,),
                         onPressed: () => setState(() => _isPasswordObscured = !_isPasswordObscured),
                       ),
                       border: OutlineInputBorder(
@@ -167,7 +230,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       fillColor: Colors.white,
                       prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                       suffixIcon: IconButton(
-                        icon: Icon(_isConfirmPasswordObscured ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: Colors.grey),
+                        icon: Icon(
+                            _isConfirmPasswordObscured
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: Colors.grey),
                         onPressed: () => setState(() => !_isConfirmPasswordObscured),
                       ),
                       border: OutlineInputBorder(
@@ -178,7 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value){
                       if(value == null || value.isEmpty){
-                        return 'Please confim your password.';
+                        return 'Please confirm your password.';
                       }
                       if(value != _passwordController.text){
                         return 'Password do not match.';
@@ -226,109 +293,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBrandLogo() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: const TextSpan(
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-        ),
-        children: [
-          TextSpan(
-            text: "MAGIC",
-            style: TextStyle(color: Color(0xFF4A90E2)),
-          ),
-          TextSpan(
-            text: "ENGLISH",
-            style: TextStyle(color: Color(0xFF1A252F)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required TextEditingController controller,
-    required IconData prefixIcon,
-    String? hintText,
-    TextInputType? keyboardType,
-    bool isObscured = false,
-    VoidCallback? onToggleVisibility,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: Color(0xFF5A6B7B),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          obscureText: isObscured,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hintText,
-            prefixIcon: Icon(prefixIcon, color: Colors.grey),
-            suffixIcon: onToggleVisibility != null
-                ? IconButton(
-              icon: Icon(
-                isObscured ? Icons.visibility_off : Icons.visibility,
-                color: Colors.grey,
-              ),
-              onPressed: onToggleVisibility,
-            )
-                : null,
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding:
-            const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide:
-              const BorderSide(color: Color(0xFF4A90E2), width: 1.5),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRegisterButton() {
-    return ElevatedButton(
-      onPressed: _onRegisterPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4A90E2),
-        foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 52),
-        shape: const StadiumBorder(),
-        elevation: 4,
-        shadowColor: const Color(0xFF4A90E2).withOpacity(0.4),
-      ),
-      child: const Text(
-        "Register",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
         ),
       ),
     );
