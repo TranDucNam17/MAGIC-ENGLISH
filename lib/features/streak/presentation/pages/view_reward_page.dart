@@ -8,12 +8,10 @@ class ViewRewardsScreen extends StatefulWidget {
 }
 
 class _ViewRewardsScreenState extends State<ViewRewardsScreen> {
-  final int _selectedIndex = 0;
   int _selectedMilestone = 7;
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color lightBlueBackground = Color(0xFFF7F9FC);
     const Color darkText = Color(0xFF1A252F);
 
