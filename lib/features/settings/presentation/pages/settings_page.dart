@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             _darkMode = value;
                           });
                         },
-                        activeColor: primaryBlue,
+                        activeThumbColor: primaryBlue,
                       ),
                     ],
                   ),
@@ -94,7 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             _dailyReminders = value;
                           });
                         },
-                        activeColor: primaryBlue,
+                        activeThumbColor: primaryBlue,
                       ),
                       const Divider(height: 1, indent: 72),
                       SwitchListTile(
@@ -110,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             _weeklyProgress = value;
                           });
                         },
-                        activeColor: primaryBlue,
+                        activeThumbColor: primaryBlue,
                       ),
                     ],
                   ),
