@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:btl_magicenglish/features/auth/presentation/pages/login_page.dart';
 
 class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF0D47A1);
     const Color almostWhite = Color(0xFFF7F9FC);
-    const Color darkText = Color(0xFF1A252F);
-    const Color mediumGrey = Color(0xFF6C757D);
 
     return Scaffold(
       backgroundColor: almostWhite,
@@ -40,7 +37,7 @@ class OnboardingScreen extends StatelessWidget {
 }
 
 class HeroSection extends StatelessWidget {
-  const HeroSection({Key? key}) : super(key: key);
+  const HeroSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +103,10 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
