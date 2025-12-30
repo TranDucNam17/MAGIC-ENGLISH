@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ViewWordDetailScreen extends StatelessWidget {
-  final Map<String, String> wordData;
+  final Map<String, dynamic> wordData;
 
-  const ViewWordDetailScreen({
-    super.key,
-    required this.wordData,
-  });
+  const ViewWordDetailScreen({super.key, required this.wordData});
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +20,55 @@ class ViewWordDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.close, color: darkText),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(wordData['word'] ?? 'View Details'),
+        title: Text(wordData['term']?.toString() ?? 'View Details'),
         titleSpacing: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             child: Form(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _ReadOnlyTextField(label: "Word", value: wordData['word']),
+                  _ReadOnlyTextField(
+                    label: "Word",
+                    value: wordData['term']?.toString(),
+                  ),
                   const SizedBox(height: 12),
                   const _AiEnrichButton(enabled: false),
                   const SizedBox(height: 16),
-                  _ReadOnlyTextField(label: "IPA", value: wordData['ipa']),
+                  _ReadOnlyTextField(
+                    label: "IPA",
+                    value: wordData['ipa']?.toString(),
+                  ),
                   const SizedBox(height: 16),
                   _ReadOnlyTextField(
                     label: "Meaning (Vietnamese)",
-                    value: wordData['meaning'],
+                    value: wordData['note']?.toString(),
                     maxLines: 3,
                   ),
                   const SizedBox(height: 16),
-                  _ReadOnlyTextField(label: "Part of speech", value: wordData['partOfSpeech']),
-                  const SizedBox(height: 16),
-                  _buildCefrDropdown(wordData['cefr']),
-                  const SizedBox(height: 16),
-                  _ReadOnlyTextField(label: "Topic", value: wordData['topic']),
-                  const SizedBox(height: 16),
                   _ReadOnlyTextField(
-                    label: "Synonyms",
-                    value: wordData['synonyms'],
+                    label: "Part of speech",
+                    value: wordData['pos']?.toString(),
                   ),
                   const SizedBox(height: 16),
-                  _ReadOnlyTextField(label: "Notes", value: wordData['notes'], maxLines: 3),
+                  _buildCefrDropdown(wordData['cefr']?.toString()),
                   const SizedBox(height: 16),
                   _ReadOnlyTextField(
-                    label: "Example",
-                    value: wordData['example'],
-                    maxLines: 4,
+                    label: "Example (English)",
+                    value: wordData['example_en']?.toString(),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  _ReadOnlyTextField(
+                    label: "Example (Vietnamese)",
+                    value: wordData['example_vi']?.toString(),
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 24),
                   Row(
@@ -72,7 +78,10 @@ class ViewWordDetailScreen extends StatelessWidget {
                           onPressed: () => Navigator.of(context).pop(),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.blueAccent,
-                            side: const BorderSide(color: Colors.blueAccent, width: 1.5),
+                            side: const BorderSide(
+                              color: Colors.blueAccent,
+                              width: 1.5,
+                            ),
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -80,7 +89,10 @@ class ViewWordDetailScreen extends StatelessWidget {
                           ),
                           child: const Text(
                             "Cancel",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
@@ -108,7 +120,7 @@ class ViewWordDetailScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
@@ -119,6 +131,11 @@ class ViewWordDetailScreen extends StatelessWidget {
   }
 
   Widget _buildCefrDropdown(String? value) {
+    final cefrLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    final displayValue = value != null && cefrLevels.contains(value)
+        ? value
+        : 'B1';
+
     return AbsorbPointer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,19 +146,18 @@ class ViewWordDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           DropdownButtonFormField<String>(
-            initialValue: value,
+            initialValue: displayValue,
             onChanged: null,
-            items: <String>['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-                .map<DropdownMenuItem<String>>((String val) {
-              return DropdownMenuItem<String>(
-                value: val,
-                child: Text(val),
-              );
+            items: cefrLevels.map<DropdownMenuItem<String>>((String val) {
+              return DropdownMenuItem<String>(value: val, child: Text(val));
             }).toList(),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 14,
+                horizontal: 12,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(color: Colors.grey.shade300),
@@ -175,23 +191,31 @@ class _ReadOnlyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayValue = value?.isEmpty ?? true ? '-' : value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(color: Color(0xFF616161), fontSize: 12, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: Color(0xFF616161),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(height: 4),
         TextFormField(
-          controller: TextEditingController(text: value),
+          controller: TextEditingController(text: displayValue),
           readOnly: true,
           maxLines: maxLines,
-          style: const TextStyle(color: Color(0xFF424242)), // Màu chữ đậm hơn một chút
+          style: const TextStyle(color: Color(0xFF424242)),
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 14,
+              horizontal: 12,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey.shade300),
@@ -233,10 +257,7 @@ class _AiEnrichButton extends StatelessWidget {
         children: [
           Icon(Icons.auto_awesome, size: 18),
           SizedBox(width: 8),
-          Text(
-            "AI Enrich",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text("AI Enrich", style: TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );
