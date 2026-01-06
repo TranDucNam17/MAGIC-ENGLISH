@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:btl_magicenglish/core/services/auth_service.dart';
 import 'package:btl_magicenglish/features/auth/presentation/pages/register_success_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -39,8 +39,8 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _handleRegister() async{
-    if(!_formKey.currentState!.validate()) {
+  Future<void> _handleRegister() async {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
     showDialog(
@@ -48,48 +48,39 @@ class _RegisterPageState extends State<RegisterPage> {
         barrierDismissible: false,
         builder: (context) => const Center(
           child: CircularProgressIndicator(),
-        )
-    );
-      final email = _emailController.text.trim();
-      final password = _passwordController.text;
+        ));
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-      try{
-        // call API, add new user
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email,
-            password: password
-        );
-        print('Firebase Auth: User created successfully! UID: ${userCredential.user?.uid}');
+    try {
+      final result = await AuthService.register(
+        email: email,
+        password: password,
+        displayName: email.split('@')[0],
+      );
 
-        final user = FirebaseAuth.instance.currentUser;
-        if(user != null) {
-          final idToken = await user.getIdToken(true);
-          print('USER: ${user.email} - UID:: ${user.uid}');
-          print('ID TOKEN: $idToken');
-        }else {
-          print('User not found despite successful login.');
-        }
-    
-        if(mounted) Navigator.of(context).pop();
-        if(mounted) {
+      if (result['success']) {
+        print('Registration successful! Token: ${result['token']}');
+
+        if (mounted) Navigator.of(context).pop();
+        if (mounted) {
           Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const RegisterSuccessPage())
-          );
+              MaterialPageRoute(builder: (context) => const RegisterSuccessPage()));
         }
-      }on FirebaseAuthException catch(e){
-        if(mounted) Navigator.of(context).pop();
-        print('Firebase Auth Error: ${e.code}');
-        String errorMessage = 'An error occurred. Please try again.';
-        if(e.code == 'weak-password'){
-          errorMessage = 'The password provided is too weak.';
-        }else if(e.code == 'email-already-in-use'){
+      } else {
+        if (mounted) Navigator.of(context).pop();
+        String errorMessage = 'Registration failed. Please try again.';
+        if (result['error'].contains('email-already-in-use') ||
+            result['error'].contains('already exists')) {
           errorMessage = 'An account already exists for that email.';
-        }else if(e.code == 'invalid-email'){
+        } else if (result['error'].contains('weak-password')) {
+          errorMessage = 'The password provided is too weak.';
+        } else if (result['error'].contains('invalid-email')) {
           errorMessage = 'The email address is not valid.';
         }
-        
-        if(mounted){
+
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(errorMessage),
@@ -97,18 +88,19 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           );
         }
-      }catch(e){
-        if(mounted) Navigator.of(context).pop();
-        print('An unexpected error occurred: $e');
-        if(mounted){
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('An unexpected error occurred. Please check your network connection.'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
       }
+    } catch (e) {
+      if (mounted) Navigator.of(context).pop();
+      print('An unexpected error occurred: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
