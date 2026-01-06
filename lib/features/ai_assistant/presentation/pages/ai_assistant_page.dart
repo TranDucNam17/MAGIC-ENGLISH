@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'chatbot_page.dart';
 
 class AiAssistantScreen extends StatelessWidget {
   const AiAssistantScreen({super.key});
@@ -20,7 +21,7 @@ class AiAssistantScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          'AI Assistant',
+          'Trợ lý AI',
           style: TextStyle(
             color: darkText,
             fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _GreetingBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hi, Nam",
+            "Xin chào, Nam",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -73,11 +74,8 @@ class _GreetingBox extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            "How can I help you today?",
-            style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF4A5568),
-            ),
+            "Tôi có thể giúp bạn với gì hôm nay?",
+            style: TextStyle(fontSize: 14, color: Color(0xFF4A5568)),
           ),
         ],
       ),
@@ -97,36 +95,39 @@ class _FeatureShortcutsGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       childAspectRatio: 2.5,
-      children: const [
-        _FeatureButton(
-          label: "Fix Grammar",
+      children: [
+        const _FeatureButton(
+          label: "Sửa ngữ pháp",
           icon: Icons.spellcheck,
           color: Color(0xFFE0F7FA), // Light Cyan
         ),
-        _FeatureButton(
-          label: "Improve Sentences",
+        const _FeatureButton(
+          label: "Cải thiện câu",
           icon: Icons.auto_awesome,
           color: Color(0xFFFFF3E0), // Light Orange
         ),
-        _FeatureButton(
-          label: "Explain Word",
+        const _FeatureButton(
+          label: "Giải thích từ",
           icon: Icons.lightbulb_outline,
           color: Color(0xFFF3E5F5), // Light Purple
         ),
-        _FeatureButton(
-          label: "Translate EN <-> VN",
+        const _FeatureButton(
+          label: "Dịch EN <-> VN",
           icon: Icons.translate,
           color: Color(0xFFE8F5E9), // Light Green
         ),
-        _FeatureButton(
-          label: "Create Example",
+        const _FeatureButton(
+          label: "Tạo ví dụ",
           icon: Icons.add_comment_outlined,
           color: Color(0xFFFFFDE7), // Light Yellow
         ),
         _FeatureButton(
-          label: "CEFR Rewrite",
-          icon: Icons.school_outlined,
-          color: Color(0xFFFFEBEE), // Light Red
+          label: "Trò chuyện với AI 🤖",
+          icon: Icons.chat_bubble_outline,
+          color: const Color(0xFFFFEBEE), // Light Red
+          onTap: () => Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => const ChatbotPage())),
         ),
       ],
     );
@@ -137,19 +138,19 @@ class _FeatureButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final Color color;
+  final VoidCallback? onTap;
 
   const _FeatureButton({
     required this.label,
     required this.icon,
     required this.color,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // TODO: Handle feature tap
-      },
+      onTap: onTap ?? () {},
       borderRadius: BorderRadius.circular(12),
       child: Container(
         decoration: BoxDecoration(
@@ -211,7 +212,7 @@ class _ChatInputBar extends StatelessWidget {
           const Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: "Write your message...",
+                hintText: "Viết tin nhắn của bạn...",
                 border: InputBorder.none,
               ),
             ),
@@ -226,4 +227,3 @@ class _ChatInputBar extends StatelessWidget {
     );
   }
 }
-
