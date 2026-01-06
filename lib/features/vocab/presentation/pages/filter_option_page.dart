@@ -114,7 +114,16 @@ class _FilterOptionScreenState extends State<FilterOptionScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        // Return filter data
+                        Navigator.of(context).pop({
+                          'cefrLevels': _selectedCefrLevels.toList(),
+                          'posFilters': _selectedPos.toList(),
+                          'sortBy': _sortByValue,
+                          'source': {
+                            'aiGenerated': _isAiGenerated,
+                            'userAdded': _isUserAdded,
+                          },
+                        });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryBlue,
