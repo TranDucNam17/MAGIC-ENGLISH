@@ -22,6 +22,11 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
   String searchQuery = '';
   String cefrFilter = 'All';
   String posFilter = 'All';
+  List<String> selectedCefrLevels = [];
+  List<String> selectedPosList = [];
+  String sortByValue = 'A - Z';
+  bool filterAiGenerated = false;
+  bool filterUserAdded = false;
   int currentPage = 1;
   int pageSize = 10;
 
@@ -53,28 +58,28 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
           // Handle API response - check different possible structures
           List<dynamic> data = [];
 
-          if (result is Map<String, dynamic>) {
-            // Check if response has 'data' key with nested structure
-            if (result.containsKey('data')) {
-              final dataField = result['data'];
-              if (dataField is Map<String, dynamic> &&
-                  dataField.containsKey('data')) {
-                // Structure: {success: true, data: {data: [...], ...pagination...}}
-                data = (dataField['data'] as List?) ?? [];
-              } else if (dataField is List) {
-                // Structure: {success: true, data: [...]}
-                data = dataField;
-              }
-            } else if (result.containsKey('words')) {
-              // Alternative structure: {success: true, words: [...]}
-              data = (result['words'] as List?) ?? [];
+          // Check if response has 'data' key with nested structure
+          if (result.containsKey('data')) {
+            final dataField = result['data'];
+            if (dataField is Map<String, dynamic> &&
+                dataField.containsKey('data')) {
+              // Structure: {success: true, data: {data: [...], ...pagination...}}
+              data = (dataField['data'] as List?) ?? [];
+            } else if (dataField is List) {
+              // Structure: {success: true, data: [...]}
+              data = dataField;
             }
-          } else if (result is List) {
-            // Direct list response
-            data = (result as List<dynamic>);
+          } else if (result.containsKey('words')) {
+            // Alternative structure: {success: true, words: [...]}
+            data = (result['words'] as List?) ?? [];
           }
 
           print('Parsed data: $data');
+          print('Data length: ${data.length}');
+          if (data.isNotEmpty) {
+            print('First item: ${data.first}');
+            print('First item keys: ${(data.first as Map).keys.toList()}');
+          }
           wordsList = data;
           _applyFilters();
           isLoading = false;
@@ -92,19 +97,115 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
     }
   }
 
+  /// Normalize POS values from API to match filter abbreviations
+  String _normalizePosValue(String posValue) {
+    final normalized = posValue.toLowerCase().trim();
+    // Map full words to abbreviations used in filter
+    const posMap = {
+      'adjective': 'adj',
+      'adverb': 'adv',
+      'preposition': 'prep',
+      'conjunction': 'conj',
+      'pronoun': 'pronoun',
+      'noun': 'noun',
+      'verb': 'verb',
+    };
+    return posMap[normalized] ?? normalized;
+  }
+
   void _applyFilters() {
     setState(() {
+      print('========== FILTER DEBUG ==========');
+      print('Total words in list: ${wordsList.length}');
+      if (wordsList.isNotEmpty) {
+        print('First word: ${wordsList.first}');
+        print('First word keys: ${wordsList.first.keys.toList()}');
+      }
+      print('Selected CEFR levels: $selectedCefrLevels');
+      print('Selected POS: $selectedPosList');
+      print('Sort by: $sortByValue');
+      print('Filter AI: $filterAiGenerated, Filter User: $filterUserAdded');
+      print('Search query: "$searchQuery"');
+      print('==================================');
+
+      // Filter by search query, CEFR levels, POS, and source
       filteredWordsList = wordsList.where((word) {
         final term = (word['term'] ?? '').toString().toLowerCase();
         final cefr = word['cefr'] ?? '';
-        final pos = word['pos'] ?? '';
+        final pos = _normalizePosValue(word['pos'] ?? '');
+        final source = word['source'] ?? 'user'; // 'ai' or 'user'
 
-        final matchSearch = term.contains(searchQuery.toLowerCase());
-        final matchCefr = cefrFilter == 'All' || cefr == cefrFilter;
-        final matchPos = posFilter == 'All' || pos == posFilter;
+        // Search filter
+        final matchSearch =
+            searchQuery.isEmpty || term.contains(searchQuery.toLowerCase());
 
-        return matchSearch && matchCefr && matchPos;
+        // CEFR filter
+        final matchCefr =
+            selectedCefrLevels.isEmpty || selectedCefrLevels.contains(cefr);
+
+        // POS filter - compare with normalized POS
+        final matchPos =
+            selectedPosList.isEmpty || selectedPosList.contains(pos);
+
+        // Source filter
+        final isAiGenerated = source.toLowerCase() == 'ai';
+        bool matchSource = true;
+        // Only apply source filter if at least one source is selected
+        if (filterAiGenerated || filterUserAdded) {
+          matchSource =
+              (filterAiGenerated && isAiGenerated) ||
+              (filterUserAdded && !isAiGenerated);
+        }
+        // If no source filter is selected, show all
+
+        final matches = matchSearch && matchCefr && matchPos && matchSource;
+
+        // Log each word and why it's filtered
+        if (!matches) {
+          print(
+            'EXCLUDED: "$term" | cefr:$cefr(match:$matchCefr) pos:$pos(available:$selectedPosList match:$matchPos) source:$source(match:$matchSource) search:$matchSearch',
+          );
+        } else if (selectedPosList.isNotEmpty && selectedCefrLevels.isEmpty) {
+          // Debug: show which words PASS when only POS filter is set
+          print('INCLUDED: "$term" | pos:$pos(match:$matchPos)');
+        }
+
+        return matches;
       }).toList();
+
+      print('Result: ${filteredWordsList.length} words matched');
+      print('==================================');
+
+      // Apply sorting
+      if (sortByValue == 'A - Z') {
+        filteredWordsList.sort(
+          (a, b) => (a['term'] ?? '').toString().compareTo(
+            (b['term'] ?? '').toString(),
+          ),
+        );
+      } else if (sortByValue == 'Z - A') {
+        filteredWordsList.sort(
+          (a, b) => (b['term'] ?? '').toString().compareTo(
+            (a['term'] ?? '').toString(),
+          ),
+        );
+      } else if (sortByValue == 'Newest') {
+        filteredWordsList.sort((a, b) {
+          final dateA =
+              DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
+          final dateB =
+              DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
+          return dateB.compareTo(dateA);
+        });
+      } else if (sortByValue == 'Oldest') {
+        filteredWordsList.sort((a, b) {
+          final dateA =
+              DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
+          final dateB =
+              DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
+          return dateA.compareTo(dateB);
+        });
+      }
     });
   }
 
@@ -113,16 +214,6 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
       searchQuery = query;
       currentPage = 1;
     });
-    _applyFilters();
-  }
-
-  void _onCefrFilterChange(String value) {
-    setState(() => cefrFilter = value);
-    _applyFilters();
-  }
-
-  void _onPosFilterChange(String value) {
-    setState(() => posFilter = value);
     _applyFilters();
   }
 
@@ -164,7 +255,31 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            SearchFilterAddSection(onSearch: _onSearch, onRefresh: _onRefresh),
+            SearchFilterAddSection(
+              onSearch: _onSearch,
+              onRefresh: _onRefresh,
+              onApplyFilter: (cefrLevels, posList, sortBy, aiGen, userAdded) {
+                print('========== ON APPLY FILTER ==========');
+                print(
+                  'Received CEFR: $cefrLevels (length: ${cefrLevels.length})',
+                );
+                print('Received POS: $posList (length: ${posList.length})');
+                if (posList.isNotEmpty) {
+                  print('POS values: ${posList.map((p) => '"$p"').join(', ')}');
+                }
+                print('Received Sort: $sortBy');
+                print('Received AI: $aiGen, User: $userAdded');
+                print('=====================================');
+                setState(() {
+                  selectedCefrLevels = cefrLevels;
+                  selectedPosList = posList;
+                  sortByValue = sortBy;
+                  filterAiGenerated = aiGen;
+                  filterUserAdded = userAdded;
+                });
+                _applyFilters();
+              },
+            ),
             // Error State
             if (hasError)
               Padding(
@@ -234,11 +349,13 @@ class _MagicVocabScreenState extends State<MagicVocabScreen> {
 class SearchFilterAddSection extends StatefulWidget {
   final Function(String) onSearch;
   final VoidCallback onRefresh;
+  final Function(List<String>, List<String>, String, bool, bool)? onApplyFilter;
 
   const SearchFilterAddSection({
     super.key,
     required this.onSearch,
     required this.onRefresh,
+    this.onApplyFilter,
   });
 
   @override
@@ -289,12 +406,47 @@ class _SearchFilterAddSectionState extends State<SearchFilterAddSection> {
               ),
               const SizedBox(width: 12),
               OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(
-                      builder: (context) => const FilterOptionScreen(),
-                    ),
-                  );
+                onPressed: () async {
+                  final filterData =
+                      await Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) => const FilterOptionScreen(),
+                        ),
+                      );
+                  if (filterData != null) {
+                    // Safely extract filter values with proper casting
+                    final cefrData = filterData['cefrLevels'];
+                    final cefrList = cefrData is List
+                        ? List<String>.from(cefrData.map((e) => e.toString()))
+                        : <String>[];
+
+                    final posData = filterData['posFilters'];
+                    final posList = posData is List
+                        ? List<String>.from(posData.map((e) => e.toString()))
+                        : <String>[];
+
+                    final sortByValue =
+                        filterData['sortBy']?.toString() ?? 'A - Z';
+
+                    bool filterAiGenerated = false;
+                    bool filterUserAdded = false;
+                    final sourceData = filterData['source'];
+                    if (sourceData is Map) {
+                      filterAiGenerated =
+                          sourceData['aiGenerated'] as bool? ?? false;
+                      filterUserAdded =
+                          sourceData['userAdded'] as bool? ?? false;
+                    }
+
+                    // Call parent callback to update state
+                    widget.onApplyFilter?.call(
+                      cefrList,
+                      posList,
+                      sortByValue,
+                      filterAiGenerated,
+                      filterUserAdded,
+                    );
+                  }
                 },
                 icon: const Icon(Icons.filter_list),
                 label: const Text("Filter"),
@@ -312,11 +464,13 @@ class _SearchFilterAddSectionState extends State<SearchFilterAddSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                onPressed: widget.onRefresh,
-                icon: const Icon(Icons.refresh),
-                color: const Color(0xFF0D47A1),
-                tooltip: 'Refresh',
+              Tooltip(
+                message: 'Refresh',
+                child: IconButton(
+                  onPressed: widget.onRefresh,
+                  icon: const Icon(Icons.refresh),
+                  color: const Color(0xFF0D47A1),
+                ),
               ),
               SizedBox(
                 width: 48,
@@ -518,9 +672,7 @@ class VocabularyCard extends StatelessWidget {
                 Navigator.of(dialogContext).pop();
                 await _deleteWord(context, id);
               },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
-              ),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
               child: const Text('Delete'),
             ),
           ],
