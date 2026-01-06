@@ -14,6 +14,7 @@ class _AddWordScreenState extends State<AddWordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isEnriching = false;
+  bool _hasEnriched = false;
 
   final _termController = TextEditingController();
   final _ipaController = TextEditingController();
@@ -90,12 +91,44 @@ class _AddWordScreenState extends State<AddWordScreen> {
       _isEnriching = true;
       errorMessage = null;
     });
+
+    // Show processing dialog
+    if (mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext ctx) => Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                const Text(
+                  'Enriching with AI...',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'This may take 10-30 seconds',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     try {
       print('[AddWordScreen] Starting AI enrich for term: $term');
       final result = await AiApiService.enrichWord({'term': term});
       print('[AddWordScreen] AI enrich response: $result');
       print('[AddWordScreen] Response type: ${result.runtimeType}');
-      
+
+      if (mounted) Navigator.pop(context); // Close dialog
+
       if (result['success'] == true && result['data'] != null) {
         final enrichedData = result['data'] as Map<String, dynamic>;
         print('[AddWordScreen] Enriched data: $enrichedData');
@@ -108,6 +141,7 @@ class _AddWordScreenState extends State<AddWordScreen> {
           _exampleViController.text =
               enrichedData['example_vi']?.toString() ?? '';
           _cefrController.text = enrichedData['cefr']?.toString() ?? 'B1';
+          _hasEnriched = true;
         });
         print('[AddWordScreen] AI enrichment successful!');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -117,13 +151,17 @@ class _AddWordScreenState extends State<AddWordScreen> {
           ),
         );
       } else {
-        final errorMsg = result['error'] ?? result['message'] ?? 'Failed to get data from AI service.';
+        final errorMsg =
+            result['error'] ??
+            result['message'] ??
+            'Failed to get data from AI service.';
         print('[AddWordScreen] AI enrich failed: $errorMsg');
         throw Exception(errorMsg);
       }
     } catch (e) {
       print('[AddWordScreen] Exception in AI enrich: $e');
       if (mounted) {
+        Navigator.pop(context); // Close dialog
         setState(
           () => errorMessage = e.toString().replaceFirst('Exception: ', ''),
         );
@@ -193,29 +231,10 @@ class _AddWordScreenState extends State<AddWordScreen> {
                     ),
                     const SizedBox(height: 16),
                   ],
-                  const _AiEnrichButton(),
-                  _FormTextField(
-                    label: "Term",
-                    controller: _termController,
-                    suffixIcon: _isEnriching
-                        ? const Padding(
-                            padding: EdgeInsets.only(right: 12.0),
-                            child: SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          )
-                        : Tooltip(
-                            message: 'AI Enrich',
-                            child: IconButton(
-                              onPressed: _handleAiEnrich,
-                              icon: const Icon(
-                                Icons.auto_awesome,
-                                color: Color(0xFF673AB7),
-                              ),
-                            ),
-                          ),
+                  _FormTextField(label: "Term", controller: _termController),
+                  _AiEnrichButton(
+                    onPressed: _handleAiEnrich,
+                    isLoading: _isEnriching,
                   ),
                   const SizedBox(height: 16),
                   _FormTextField(label: "IPA", controller: _ipaController),
@@ -243,7 +262,10 @@ class _AddWordScreenState extends State<AddWordScreen> {
                     maxLines: 2,
                   ),
                   const SizedBox(height: 16),
-                  _FormCefrDropdown(controller: _cefrController),
+                  _FormCefrDropdown(
+                    controller: _cefrController,
+                    enabled: _hasEnriched,
+                  ),
                   const SizedBox(height: 24),
                   Row(
                     children: [
@@ -317,35 +339,60 @@ class _AddWordScreenState extends State<AddWordScreen> {
 }
 
 class _AiEnrichButton extends StatelessWidget {
-  const _AiEnrichButton();
+  final VoidCallback onPressed;
+  final bool isLoading;
+
+  const _AiEnrichButton({required this.onPressed, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
     const Color accentGreen = Color(0xFF66DDAA);
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: accentGreen,
         foregroundColor: const Color(0xFF003D23),
+        disabledBackgroundColor: Colors.grey.withOpacity(0.3),
         shape: const StadiumBorder(),
         padding: const EdgeInsets.symmetric(vertical: 10),
-        elevation: 1,
+        elevation: isLoading ? 0 : 1,
       ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.auto_awesome, size: 18),
-          SizedBox(width: 8),
-          Text("AI Enrich", style: TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
+      child: isLoading
+          ? const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(Color(0xFF003D23)),
+                  ),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  "Processing...",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
+          : const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.auto_awesome, size: 18),
+                SizedBox(width: 8),
+                Text(
+                  "AI Enrich",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
     );
   }
 }
 
 class _FormTextField extends StatelessWidget {
   final String label;
-  final String? hint;
   final int maxLines;
   final TextEditingController controller;
   final Widget? suffixIcon;
@@ -353,7 +400,6 @@ class _FormTextField extends StatelessWidget {
   const _FormTextField({
     required this.label,
     required this.controller,
-    this.hint,
     this.maxLines = 1,
     this.suffixIcon,
   });
@@ -382,7 +428,6 @@ class _FormTextField extends StatelessWidget {
             return null;
           },
           decoration: InputDecoration(
-            hintText: hint,
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: Colors.white,
@@ -411,8 +456,9 @@ class _FormTextField extends StatelessWidget {
 
 class _FormCefrDropdown extends StatefulWidget {
   final TextEditingController controller;
+  final bool enabled;
 
-  const _FormCefrDropdown({required this.controller});
+  const _FormCefrDropdown({required this.controller, this.enabled = false});
 
   @override
   State<_FormCefrDropdown> createState() => _FormCefrDropdownState();
@@ -427,6 +473,22 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
     _selectedValue = widget.controller.text.isEmpty
         ? 'B1'
         : widget.controller.text;
+
+    // Listen to controller changes (from AI Enrich)
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    final newValue = widget.controller.text;
+    if (newValue.isNotEmpty && newValue != _selectedValue) {
+      setState(() => _selectedValue = newValue);
+    }
   }
 
   @override
@@ -445,43 +507,69 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
           ),
         ),
         const SizedBox(height: 4),
-        DropdownButtonFormField<String>(
-          value: _selectedValue,
-          onChanged: (value) {
-            if (value != null) {
-              setState(() => _selectedValue = value);
-              widget.controller.text = value;
-            }
-          },
-          items: const ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-              .map(
-                (level) => DropdownMenuItem(
-                  value: level,
-                  child: Text(level, style: const TextStyle(fontSize: 14)),
+        if (!widget.enabled)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.lock_outline, size: 16, color: Colors.grey),
+                const SizedBox(width: 8),
+                const Text(
+                  'Click "AI Enrich" first to select CEFR level',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-              )
-              .toList(),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 14,
-              horizontal: 12,
+              ],
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: primaryBlue),
+          )
+        else
+          DropdownButtonFormField<String>(
+            value: _selectedValue,
+            onChanged: widget.enabled
+                ? (value) {
+                    if (value != null) {
+                      setState(() => _selectedValue = value);
+                      widget.controller.text = value;
+                    }
+                  }
+                : null,
+            items: const ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+                .map(
+                  (level) => DropdownMenuItem(
+                    value: level,
+                    child: Text(level, style: const TextStyle(fontSize: 14)),
+                  ),
+                )
+                .toList(),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 14,
+                horizontal: 12,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(color: primaryBlue),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
