@@ -261,14 +261,12 @@ class _EditWordScreenState extends State<EditWordScreen> {
 
 class _FormTextField extends StatelessWidget {
   final String label;
-  final String? hint;
   final int maxLines;
   final TextEditingController controller;
 
   const _FormTextField({
     required this.label,
     required this.controller,
-    this.hint,
     this.maxLines = 1,
   });
 
@@ -296,7 +294,6 @@ class _FormTextField extends StatelessWidget {
             return null;
           },
           decoration: InputDecoration(
-            hintText: hint,
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.symmetric(
@@ -337,13 +334,15 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = widget.controller.text.isEmpty ? 'B1' : widget.controller.text;
+    _selectedValue = widget.controller.text.isEmpty
+        ? 'B1'
+        : widget.controller.text;
   }
 
   @override
   Widget build(BuildContext context) {
     const Color primaryBlue = Color(0xFF0D47A1);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -365,13 +364,12 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
             }
           },
           items: const ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-              .map((level) => DropdownMenuItem(
-                value: level,
-                child: Text(
-                  level,
-                  style: const TextStyle(fontSize: 14),
+              .map(
+                (level) => DropdownMenuItem(
+                  value: level,
+                  child: Text(level, style: const TextStyle(fontSize: 14)),
                 ),
-              ))
+              )
               .toList(),
           decoration: InputDecoration(
             filled: true,
@@ -390,9 +388,7 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: primaryBlue,
-              ),
+              borderSide: const BorderSide(color: primaryBlue),
             ),
           ),
         ),
@@ -400,4 +396,3 @@ class _FormCefrDropdownState extends State<_FormCefrDropdown> {
     );
   }
 }
-
