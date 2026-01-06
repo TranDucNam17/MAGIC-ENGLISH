@@ -41,10 +41,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
     return Scaffold(
       backgroundColor: lightBlueBackground,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _widgetOptions,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _widgetOptions),
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -58,9 +55,18 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         elevation: 8.0,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.book_outlined), label: 'Vocab'),
-          BottomNavigationBarItem(icon: Icon(Icons.spellcheck_outlined), label: 'Grammar'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book_outlined),
+            label: 'Vocab',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.spellcheck_outlined),
+            label: 'Grammar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
         ],
       ),
     );
@@ -68,12 +74,10 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 }
 
 class _HomeScreenContent extends StatelessWidget {
-
   const _HomeScreenContent();
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -81,7 +85,6 @@ class _HomeScreenContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
               const HeaderGreetingCard(userName: "Nam"),
               const SizedBox(height: 16),
 
@@ -155,9 +158,17 @@ class HeaderGreetingCard extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.notifications_outlined, color: Colors.grey),
+              icon: const Icon(
+                Icons.notifications_outlined,
+                color: Colors.grey,
+              ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsPage()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsPage(),
+                  ),
+                );
               },
             ),
           ],
@@ -183,7 +194,10 @@ class DailyStreakCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.local_fire_department_rounded, color: Colors.orangeAccent),
+              const Icon(
+                Icons.local_fire_department_rounded,
+                color: Colors.orangeAccent,
+              ),
               const SizedBox(width: 8),
               Text(
                 "Daily Streak: $streakDays days",
@@ -191,16 +205,20 @@ class DailyStreakCard extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   print("Navigating to Daily Streak Details...");
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DailyStreakScreen()),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DailyStreakScreen(),
+                    ),
                   );
                 },
                 child: const Text(
                   "View details",
                   style: TextStyle(color: Color(0xFF0D47A1), fontSize: 12),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -231,8 +249,13 @@ class StatsGrid extends StatelessWidget {
       childAspectRatio: 1.5,
       children: [
         GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const WordLearnedScreen()));
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const WordLearnedScreen(),
+              ),
+            );
           },
           child: const _StatTile(
             icon: Icons.translate,
@@ -243,8 +266,11 @@ class StatsGrid extends StatelessWidget {
         ),
 
         GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const CefrLevelScreen()));
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CefrLevelScreen()),
+            );
           },
           child: const _StatTile(
             icon: Icons.trending_up,
@@ -255,8 +281,13 @@ class StatsGrid extends StatelessWidget {
         ),
 
         GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const PartOfSpeechScreen()));
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PartOfSpeechScreen(),
+              ),
+            );
           },
           child: const _StatTile(
             icon: Icons.category,
@@ -391,7 +422,10 @@ class ContinueLearningCard extends StatelessWidget {
                 ),
                 elevation: 4,
               ),
-              child: const Text("Resume Lesson", style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                "Resume Lesson",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
@@ -401,7 +435,7 @@ class ContinueLearningCard extends StatelessWidget {
 }
 
 class FeatureShortcuts extends StatelessWidget {
-  const FeatureShortcuts({super.key,});
+  const FeatureShortcuts({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -409,56 +443,70 @@ class FeatureShortcuts extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MagicVocabScreen()));
+              context,
+              MaterialPageRoute(builder: (context) => const MagicVocabScreen()),
+            );
           },
           child: const _ShortcutItem(icon: Icons.school, label: "Magic Vocab"),
         ),
 
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const GrammarCheckerScreen())
+              context,
+              MaterialPageRoute(
+                builder: (context) => const GrammarCheckerScreen(),
+              ),
             );
           },
           child: const _ShortcutItem(icon: Icons.rule, label: "Grammar"),
         ),
 
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AiAssistantScreen())
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AiAssistantScreen(),
+              ),
             );
           },
-          child: const _ShortcutItem(icon: Icons.auto_awesome, label: "AI Assistant"),
+          child: const _ShortcutItem(
+            icon: Icons.auto_awesome,
+            label: "AI Assistant",
+          ),
         ),
 
         GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProgressTrackingPage())
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProgressTrackingPage(),
+              ),
             );
           },
           child: const _ShortcutItem(icon: Icons.bar_chart, label: "Progress"),
         ),
 
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AchievementsPage())
+              context,
+              MaterialPageRoute(builder: (context) => const AchievementsPage()),
             );
           },
-          child: const _ShortcutItem(icon: Icons.emoji_events, label: "Achievements"),
+          child: const _ShortcutItem(
+            icon: Icons.emoji_events,
+            label: "Achievements",
+          ),
         ),
       ],
     );
   }
 }
-
 
 class _ShortcutItem extends StatelessWidget {
   final IconData icon;
@@ -535,7 +583,10 @@ class _CefrLevelRow extends StatelessWidget {
             width: 35,
             child: Text(
               level,
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -553,4 +604,3 @@ class _CefrLevelRow extends StatelessWidget {
     );
   }
 }
-
