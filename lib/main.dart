@@ -1,7 +1,5 @@
-import 'package:btl_magicenglish/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:btl_magicenglish/features/splash/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,19 +8,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: const OnboardingScreen(),
-      // home: DisconnectedPage(
-      //   onRetry: (){{
-      //     print('Nut Retry da duoc bam');
-      //   }
-      //   },
-      // ),
-    );
+    return MaterialApp(title: 'Magic English', home: const SplashScreen());
   }
 }
-
